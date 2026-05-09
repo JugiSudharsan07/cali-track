@@ -35,13 +35,41 @@
       letter-spacing: 0.2em;
       color: #555;
       text-transform: uppercase;
-      margin-bottom: 60px;
+      margin-bottom: 48px;
     }
+
+    .progress-bar {
+      height: 2px;
+      background: #1a1a1a;
+      border-radius: 2px;
+      margin-bottom: 40px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #c8f135;
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 28px;
+      padding: 0;
+      text-align: left;
+    }
+
+    .back-btn:hover { color: #888; }
 
     .step-indicator {
       font-size: 12px;
       color: #555;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       letter-spacing: 0.05em;
     }
 
@@ -49,7 +77,7 @@
       font-size: 28px;
       font-weight: 700;
       line-height: 1.25;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       letter-spacing: -0.5px;
     }
 
@@ -59,7 +87,28 @@
       font-size: 15px;
       color: #888;
       line-height: 1.6;
-      margin-bottom: 40px;
+      margin-bottom: 32px;
+    }
+
+    .instruction-card {
+      background: #111;
+      border: 1px solid #222;
+      border-left: 3px solid #c8f135;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      color: #aaa;
+      line-height: 1.6;
+    }
+
+    .instruction-card strong {
+      color: #c8f135;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
 
     .input-field {
@@ -76,7 +125,6 @@
     }
 
     .input-field:focus { border-color: #c8f135; }
-
     .input-field::placeholder { color: #444; }
 
     .option-btn {
@@ -103,22 +151,75 @@
       background: #1a2a00;
     }
 
-    .option-icon {
-      font-size: 20px;
-      width: 32px;
-      text-align: center;
-    }
-
+    .option-icon { font-size: 20px; width: 32px; text-align: center; }
     .option-text { flex: 1; }
+    .option-label { font-weight: 600; margin-bottom: 2px; }
+    .option-desc { font-size: 12px; color: #666; }
 
-    .option-label {
-      font-weight: 600;
-      margin-bottom: 2px;
+    .number-input-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 8px;
     }
 
-    .option-desc {
+    .number-btn {
+      background: #1a1a1a;
+      border: 1.5px solid #2a2a2a;
+      border-radius: 50%;
+      width: 52px;
+      height: 52px;
+      font-size: 22px;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.2s;
+      user-select: none;
+    }
+
+    .number-btn:hover { border-color: #c8f135; }
+
+    .number-display {
+      flex: 1;
+      text-align: center;
+      font-size: 52px;
+      font-weight: 700;
+      color: #c8f135;
+      letter-spacing: -2px;
+      cursor: pointer;
+      border-bottom: 1px dashed #333;
+      padding-bottom: 4px;
+    }
+
+    .number-input-direct {
+      flex: 1;
+      text-align: center;
+      font-size: 52px;
+      font-weight: 700;
+      color: #c8f135;
+      background: none;
+      border: none;
+      border-bottom: 1px solid #c8f135;
+      outline: none;
+      width: 100%;
+      padding-bottom: 4px;
+    }
+
+    .number-hint {
+      text-align: center;
       font-size: 12px;
-      color: #666;
+      color: #444;
+      margin-bottom: 4px;
+    }
+
+    .number-unit {
+      text-align: center;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 28px;
     }
 
     .primary-btn {
@@ -139,76 +240,7 @@
     .primary-btn:active { transform: scale(0.97); }
     .primary-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    .back-btn {
-      background: none;
-      border: none;
-      color: #555;
-      font-size: 14px;
-      cursor: pointer;
-      margin-bottom: 32px;
-      padding: 0;
-      text-align: left;
-    }
-
-    .back-btn:hover { color: #888; }
-
-    .number-input-row {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-
-    .number-btn {
-      background: #1a1a1a;
-      border: 1.5px solid #2a2a2a;
-      border-radius: 50%;
-      width: 52px;
-      height: 52px;
-      font-size: 22px;
-      color: #fff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: border-color 0.2s;
-    }
-
-    .number-btn:hover { border-color: #c8f135; }
-
-    .number-display {
-      flex: 1;
-      text-align: center;
-      font-size: 48px;
-      font-weight: 700;
-      color: #c8f135;
-      letter-spacing: -2px;
-    }
-
-    .number-unit {
-      text-align: center;
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 24px;
-    }
-
-    .progress-bar {
-      height: 2px;
-      background: #1a1a1a;
-      border-radius: 2px;
-      margin-bottom: 48px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: #c8f135;
-      border-radius: 2px;
-      transition: width 0.4s ease;
-    }
-
-    /* Landing screen */
+    /* Landing */
     #screen-landing {
       text-align: center;
       align-items: center;
@@ -260,6 +292,7 @@
       color: #444;
     }
 
+    /* Modal */
     .confirm-modal {
       display: none;
       position: fixed;
@@ -294,15 +327,9 @@
       margin-bottom: 24px;
     }
 
-    .modal-highlight {
-      color: #c8f135;
-      font-weight: 600;
-    }
+    .modal-highlight { color: #c8f135; font-weight: 600; }
 
-    .modal-btn-row {
-      display: flex;
-      gap: 10px;
-    }
+    .modal-btn-row { display: flex; gap: 10px; }
 
     .modal-confirm {
       flex: 1;
@@ -327,6 +354,31 @@
       font-weight: 600;
       cursor: pointer;
     }
+
+    /* Completion */
+    .completion-screen {
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tier-summary {
+      width: 100%;
+      margin: 24px 0;
+    }
+
+    .tier-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #1a1a1a;
+      font-size: 14px;
+    }
+
+    .tier-row:last-child { border-bottom: none; }
+    .tier-exercise { color: #888; }
+    .tier-level { color: #c8f135; font-weight: 600; font-size: 13px; }
   </style>
 </head>
 <body>
@@ -336,41 +388,42 @@
   <div class="landing-logo">CaliTrack</div>
   <h1 class="landing-headline">Train smart.<br><span style="color:#c8f135">Progress automatically.</span></h1>
   <p class="landing-sub">No planning. No guessing. The app handles your progression so you just show up.</p>
-  <button class="landing-btn" onclick="startOnboarding()">Get Started</button>
+  <button class="landing-btn" onclick="goTo('screen-name')">Get Started</button>
   <p class="landing-tagline">Free · No equipment needed to start</p>
 </div>
 
 <!-- STEP 1: NAME -->
 <div class="screen" id="screen-name">
   <div class="logo">CaliTrack</div>
-  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:12%"></div></div>
-  <div class="step-indicator">Step 1 of 8</div>
+  <div class="progress-bar"><div class="progress-fill" style="width:11%"></div></div>
+  <div class="step-indicator">Step 1 of 9</div>
   <h2 class="headline">What should we<br>call you?</h2>
-  <p class="subtext">We will personalise your experience.</p>
-  <input class="input-field" type="text" id="input-name" placeholder="Your first name" maxlength="20">
+  <p class="subtext">We will use this to personalise your experience.</p>
+  <input class="input-field" type="text" id="input-name" placeholder="Your first name" maxlength="20"
+    onkeydown="if(event.key==='Enter') submitName()">
   <button class="primary-btn" onclick="submitName()">Continue</button>
 </div>
 
 <!-- STEP 2: TRAINING DAYS -->
 <div class="screen" id="screen-days">
   <div class="logo">CaliTrack</div>
-  <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
+  <div class="progress-bar"><div class="progress-fill" style="width:22%"></div></div>
   <button class="back-btn" onclick="goTo('screen-name')">← Back</button>
-  <div class="step-indicator">Step 2 of 8</div>
-  <h2 class="headline">How many days a week<br>can you train?</h2>
-  <p class="subtext">Be honest. Consistency beats intensity every time.</p>
+  <div class="step-indicator">Step 2 of 9</div>
+  <h2 class="headline">How many days a week<br>can you <span>train?</span></h2>
+  <p class="subtext">Be honest with yourself. Consistency matters more than frequency.</p>
   <button class="option-btn" onclick="selectDays(this, 3)">
     <span class="option-icon">🔥</span>
     <div class="option-text">
       <div class="option-label">3 days a week</div>
-      <div class="option-desc">Recommended for beginners · Mon / Wed / Fri</div>
+      <div class="option-desc">Recommended · Best for beginners</div>
     </div>
   </button>
   <button class="option-btn" onclick="selectDays(this, 4)">
     <span class="option-icon">💪</span>
     <div class="option-text">
       <div class="option-label">4 days a week</div>
-      <div class="option-desc">Good if you have a base level of fitness</div>
+      <div class="option-desc">Good if you have some activity base</div>
     </div>
   </button>
   <button class="option-btn" onclick="selectDays(this, 5)">
@@ -386,118 +439,156 @@
 <!-- STEP 3: EQUIPMENT -->
 <div class="screen" id="screen-equipment">
   <div class="logo">CaliTrack</div>
-  <div class="progress-bar"><div class="progress-fill" style="width:37%"></div></div>
+  <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
   <button class="back-btn" onclick="goTo('screen-days')">← Back</button>
-  <div class="step-indicator">Step 3 of 8</div>
+  <div class="step-indicator">Step 3 of 9</div>
   <h2 class="headline">Do you have access<br>to a <span>pullup bar?</span></h2>
-  <p class="subtext">Any overhead bar you can hang from — a doorframe bar, playground bar, or similar.</p>
+  <p class="subtext">Any overhead bar you can hang from — a doorframe bar, playground bar, tree branch, or slab edge.</p>
   <button class="option-btn" onclick="selectEquipment(this, true)">
     <span class="option-icon">✅</span>
     <div class="option-text">
       <div class="option-label">Yes, I have a bar</div>
-      <div class="option-desc">We will use the full pullup progression ladder</div>
+      <div class="option-desc">Full pullup progression ladder</div>
     </div>
   </button>
   <button class="option-btn" onclick="selectEquipment(this, false)">
     <span class="option-icon">🪑</span>
     <div class="option-text">
-      <div class="option-label">No bar — just my bodyweight</div>
-      <div class="option-desc">We will use table rows and door rows instead</div>
+      <div class="option-label">No bar available</div>
+      <div class="option-desc">Row-based progression using table or door</div>
     </div>
   </button>
-  <button class="primary-btn" id="btn-equipment" disabled onclick="submitEquipment()">Continue</button>
+  <button class="primary-btn" id="btn-equipment" disabled onclick="goTo('screen-assess-pushup')">Continue</button>
 </div>
 
-<!-- STEP 4: PUSHUP ASSESSMENT -->
+<!-- STEP 4: PUSHUP -->
 <div class="screen" id="screen-assess-pushup">
   <div class="logo">CaliTrack</div>
-  <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+  <div class="progress-bar"><div class="progress-fill" style="width:44%"></div></div>
   <button class="back-btn" onclick="goTo('screen-equipment')">← Back</button>
-  <div class="step-indicator">Step 4 of 8</div>
+  <div class="step-indicator">Step 4 of 9</div>
   <h2 class="headline">How many clean<br><span>pushups</span> can you do?</h2>
-  <p class="subtext">Full pushups, arms straight at top and chest near floor at bottom. Stop when form breaks. Enter 0 if you cannot do any.</p>
+  <p class="subtext">Arms straight at top, chest near floor at bottom. Stop the moment form breaks.</p>
+  <div class="instruction-card">
+    <strong>Do it now for accuracy</strong>
+    Get on the floor and do your pushups right now. Then enter the number. Guessing gives us a worse starting point.
+  </div>
   <div class="number-input-row">
     <button class="number-btn" onclick="adjustCount('pushup', -1)">−</button>
-    <div class="number-display" id="count-pushup">0</div>
+    <div class="number-display" id="display-pushup" onclick="makeEditable('pushup')">0</div>
     <button class="number-btn" onclick="adjustCount('pushup', 1)">+</button>
   </div>
+  <div class="number-hint">Tap the number to type directly</div>
   <div class="number-unit">clean reps</div>
-  <button class="primary-btn" onclick="submitAssessment('pushup', 'screen-assess-squat')">Continue</button>
+  <button class="primary-btn" onclick="submitAssessment('pushup', 'screen-assess-squat', 30)">Continue</button>
 </div>
 
-<!-- STEP 5: SQUAT ASSESSMENT -->
+<!-- STEP 5: SQUAT -->
 <div class="screen" id="screen-assess-squat">
   <div class="logo">CaliTrack</div>
-  <div class="progress-bar"><div class="progress-fill" style="width:62%"></div></div>
+  <div class="progress-bar"><div class="progress-fill" style="width:55%"></div></div>
   <button class="back-btn" onclick="goTo('screen-assess-pushup')">← Back</button>
-  <div class="step-indicator">Step 5 of 8</div>
-  <h2 class="headline">How many<br><span>squats</span> can you do?</h2>
-  <p class="subtext">Feet shoulder width, lower until thighs are parallel to floor. Full clean reps only.</p>
+  <div class="step-indicator">Step 5 of 9</div>
+  <h2 class="headline">How many clean<br><span>squats</span> can you do?</h2>
+  <p class="subtext">Feet shoulder width, thighs parallel to floor at the bottom. Full clean reps only.</p>
+  <div class="instruction-card">
+    <strong>Do it now for accuracy</strong>
+    Stand up and do your squats right now until your form breaks. Then enter the count.
+  </div>
   <div class="number-input-row">
     <button class="number-btn" onclick="adjustCount('squat', -1)">−</button>
-    <div class="number-display" id="count-squat">0</div>
+    <div class="number-display" id="display-squat" onclick="makeEditable('squat')">0</div>
     <button class="number-btn" onclick="adjustCount('squat', 1)">+</button>
   </div>
+  <div class="number-hint">Tap the number to type directly</div>
   <div class="number-unit">clean reps</div>
-  <button class="primary-btn" onclick="submitAssessment('squat', 'screen-assess-glute')">Continue</button>
+  <button class="primary-btn" onclick="submitAssessment('squat', 'screen-assess-glute', 50)">Continue</button>
 </div>
 
-<!-- STEP 6: GLUTE BRIDGE ASSESSMENT -->
+<!-- STEP 6: GLUTE BRIDGE -->
 <div class="screen" id="screen-assess-glute">
   <div class="logo">CaliTrack</div>
-  <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+  <div class="progress-bar"><div class="progress-fill" style="width:66%"></div></div>
   <button class="back-btn" onclick="goTo('screen-assess-squat')">← Back</button>
-  <div class="step-indicator">Step 6 of 8</div>
-  <h2 class="headline">How many<br><span>glute bridges</span> can you do?</h2>
-  <p class="subtext">Lie on back, knees bent, push hips up until body is straight, squeeze at top, lower slowly. Full controlled reps.</p>
+  <div class="step-indicator">Step 6 of 9</div>
+  <h2 class="headline">How many clean<br><span>glute bridges</span> can you do?</h2>
+  <p class="subtext">Lie on back, knees bent, push hips up until body is straight, squeeze at top, lower slowly.</p>
+  <div class="instruction-card">
+    <strong>Do it now for accuracy</strong>
+    Lie down and do your bridges right now. Pause and squeeze at the top of each rep. Enter the count.
+  </div>
   <div class="number-input-row">
     <button class="number-btn" onclick="adjustCount('glute', -1)">−</button>
-    <div class="number-display" id="count-glute">0</div>
+    <div class="number-display" id="display-glute" onclick="makeEditable('glute')">0</div>
     <button class="number-btn" onclick="adjustCount('glute', 1)">+</button>
   </div>
+  <div class="number-hint">Tap the number to type directly</div>
   <div class="number-unit">clean reps</div>
-  <button class="primary-btn" onclick="submitAssessment('glute', 'screen-assess-plank')">Continue</button>
+  <button class="primary-btn" onclick="submitAssessment('glute', 'screen-assess-plank', 60)">Continue</button>
 </div>
 
-<!-- STEP 7: PLANK ASSESSMENT -->
+<!-- STEP 7: PLANK -->
 <div class="screen" id="screen-assess-plank">
   <div class="logo">CaliTrack</div>
-  <div class="progress-bar"><div class="progress-fill" style="width:87%"></div></div>
+  <div class="progress-bar"><div class="progress-fill" style="width:77%"></div></div>
   <button class="back-btn" onclick="goTo('screen-assess-glute')">← Back</button>
-  <div class="step-indicator">Step 7 of 8</div>
+  <div class="step-indicator">Step 7 of 9</div>
   <h2 class="headline">How long can you<br>hold a <span>plank?</span></h2>
-  <p class="subtext">Straight arm plank, hands under shoulders, body rigid. Hold until form breaks. Enter 0 if unsure.</p>
+  <p class="subtext">Straight arms, hands under shoulders, body completely rigid. Stop when hips drop.</p>
+  <div class="instruction-card">
+    <strong>Do it now for accuracy</strong>
+    Get into position and hold right now. Check the time on your phone. Enter how many seconds you lasted.
+  </div>
   <div class="number-input-row">
     <button class="number-btn" onclick="adjustCount('plank', -5)">−</button>
-    <div class="number-display" id="count-plank">0</div>
+    <div class="number-display" id="display-plank" onclick="makeEditable('plank')">0</div>
     <button class="number-btn" onclick="adjustCount('plank', 5)">+</button>
   </div>
+  <div class="number-hint">Tap the number to type directly · Adjusts in 5s steps</div>
   <div class="number-unit">seconds</div>
-  <button class="primary-btn" onclick="submitAssessment('plank', 'screen-assess-pull')">Continue</button>
+  <button class="primary-btn" onclick="submitAssessment('plank', 'screen-assess-pull', 90)">Continue</button>
 </div>
 
-<!-- STEP 8: PULL ASSESSMENT -->
+<!-- STEP 8: PULL — bar version shown by default, updated by JS -->
 <div class="screen" id="screen-assess-pull">
   <div class="logo">CaliTrack</div>
-  <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  <div class="progress-bar"><div class="progress-fill" style="width:88%"></div></div>
   <button class="back-btn" onclick="goTo('screen-assess-plank')">← Back</button>
-  <div class="step-indicator">Step 8 of 8</div>
-  <h2 class="headline" id="pull-headline">How long can you<br>hang from a <span>bar?</span></h2>
-  <p class="subtext" id="pull-subtext">Grab the bar, arms straight, hang as long as you can. Enter 0 if you have not tried before.</p>
+  <div class="step-indicator">Step 8 of 9</div>
+  <h2 class="headline" id="pull-question-headline">How many<br><span>pullups</span> can you do?</h2>
+  <p class="subtext" id="pull-question-sub">Dead hang start, pull until chin clears the bar, lower with control. Zero is a completely valid answer.</p>
+  <div class="instruction-card" id="pull-instruction-card">
+    <strong>Do it now for accuracy</strong>
+    Find any bar — a playground bar, tree branch, slab edge — and try right now. Even zero tells us exactly where to start you.
+  </div>
   <div class="number-input-row">
     <button class="number-btn" onclick="adjustCount('pull', -1)">−</button>
-    <div class="number-display" id="count-pull">0</div>
+    <div class="number-display" id="display-pull" onclick="makeEditable('pull')">0</div>
     <button class="number-btn" onclick="adjustCount('pull', 1)">+</button>
   </div>
-  <div class="number-unit" id="pull-unit">seconds</div>
-  <button class="primary-btn" onclick="finishOnboarding()">Build my plan →</button>
+  <div class="number-hint">Tap the number to type directly</div>
+  <div class="number-unit" id="pull-unit">clean reps</div>
+  <button class="primary-btn" onclick="submitPull()">Build my plan →</button>
 </div>
 
-<!-- HIGH REP CONFIRMATION MODAL -->
+<!-- STEP 9: COMPLETION -->
+<div class="screen" id="screen-complete">
+  <div class="logo">CaliTrack</div>
+  <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  <div style="text-align:center; margin-bottom: 24px;">
+    <div style="font-size:44px; margin-bottom:16px">🎯</div>
+    <h2 class="headline" id="complete-headline">Your plan is ready</h2>
+    <p class="subtext">We have placed you at the right starting point for every exercise. Your first session is waiting.</p>
+  </div>
+  <div class="tier-summary" id="tier-summary"></div>
+  <button class="primary-btn" style="margin-top:16px" onclick="alert('Session screen — coming next build!')">Start First Session →</button>
+</div>
+
+<!-- CONFIRMATION MODAL -->
 <div class="confirm-modal" id="confirm-modal">
   <div class="modal-card">
     <div class="modal-title">Just to confirm</div>
-    <div class="modal-text">That is a high number. Were these <span class="modal-highlight">full clean reps</span> with complete range of motion — no half reps or momentum?</div>
+    <div class="modal-text">That is a high number. Were these <span class="modal-highlight">full clean reps</span> with complete range of motion — no half reps, no momentum?</div>
     <div class="modal-btn-row">
       <button class="modal-cancel" onclick="closeModal(false)">Let me recount</button>
       <button class="modal-confirm" onclick="closeModal(true)">Yes, confirm</button>
@@ -506,52 +597,32 @@
 </div>
 
 <script>
-  // User data object
   const userData = {
     name: '',
     trainingDays: 0,
     hasBar: null,
-    assessments: {
-      pushup: 0,
-      squat: 0,
-      glute: 0,
-      plank: 0,
-      pull: 0
-    }
+    assessments: { pushup: 0, squat: 0, glute: 0, plank: 0, pull: 0 }
   };
 
-  // High rep thresholds that trigger confirmation
-  const HIGH_REP_THRESHOLDS = {
-    pushup: 30,
-    squat: 50,
-    glute: 60,
-    plank: 90,
-    pull: 60
-  };
+  let pendingNext = null;
+  let pendingExercise = null;
 
-  let pendingModalExercise = null;
-  let pendingModalNext = null;
-
+  // --- NAVIGATION ---
   function goTo(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
     window.scrollTo(0, 0);
   }
 
-  function startOnboarding() {
-    goTo('screen-name');
-  }
-
+  // --- STEP 1: NAME ---
   function submitName() {
     const val = document.getElementById('input-name').value.trim();
-    if (!val) {
-      document.getElementById('input-name').focus();
-      return;
-    }
+    if (!val) { document.getElementById('input-name').focus(); return; }
     userData.name = val;
     goTo('screen-days');
   }
 
+  // --- STEP 2: DAYS ---
   let selectedDays = 0;
   function selectDays(btn, days) {
     document.querySelectorAll('#screen-days .option-btn').forEach(b => b.classList.remove('selected'));
@@ -565,93 +636,133 @@
     goTo('screen-equipment');
   }
 
-  let selectedEquipment = null;
+  // --- STEP 3: EQUIPMENT ---
   function selectEquipment(btn, hasBar) {
     document.querySelectorAll('#screen-equipment .option-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
-    selectedEquipment = hasBar;
+    userData.hasBar = hasBar;
     document.getElementById('btn-equipment').disabled = false;
-  }
 
-  function submitEquipment() {
-    userData.hasBar = selectedEquipment;
-    // Update pull assessment question based on equipment
-    if (!selectedEquipment) {
-      document.getElementById('pull-headline').innerHTML = 'How many<br><span>door rows</span> can you do?';
-      document.getElementById('pull-subtext').textContent = 'Stand facing a door, grip both sides at chest height, lean back slightly and pull yourself toward it. Full clean reps.';
-      document.getElementById('pull-unit').textContent = 'clean reps';
+    // Update pull question based on equipment choice
+    if (!hasBar) {
+      document.getElementById('pull-question-headline').innerHTML = 'How many<br><span>pullups</span> can you do?';
+      document.getElementById('pull-question-sub').textContent = 'Find any bar — a slab edge, tree branch, or playground bar — and try. Even zero tells us exactly where to start you.';
+      document.getElementById('pull-instruction-card').innerHTML = '<strong>Do it now for accuracy</strong>Go find any bar you can hang from and try. If truly no bar exists anywhere, enter 0 and we will start you on the row progression.';
     }
-    goTo('screen-assess-pushup');
   }
 
+  // --- NUMBER INPUT ---
   function adjustCount(exercise, delta) {
-    const el = document.getElementById('count-' + exercise);
-    let current = parseInt(el.textContent) || 0;
-    current = Math.max(0, current + delta);
-    el.textContent = current;
-    userData.assessments[exercise] = current;
+    const display = document.getElementById('display-' + exercise);
+    if (display.tagName === 'INPUT') {
+      let val = parseInt(display.value) || 0;
+      val = Math.max(0, val + delta);
+      display.value = val;
+      userData.assessments[exercise] = val;
+    } else {
+      let val = parseInt(display.textContent) || 0;
+      val = Math.max(0, val + delta);
+      display.textContent = val;
+      userData.assessments[exercise] = val;
+    }
   }
 
-  function submitAssessment(exercise, nextScreen) {
-    const count = userData.assessments[exercise];
-    const threshold = HIGH_REP_THRESHOLDS[exercise];
+  function makeEditable(exercise) {
+    const display = document.getElementById('display-' + exercise);
+    if (display.tagName === 'INPUT') return;
+    const current = parseInt(display.textContent) || 0;
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.className = 'number-input-direct';
+    input.id = 'display-' + exercise;
+    input.value = current;
+    input.min = 0;
+    input.max = 999;
+    display.replaceWith(input);
+    input.focus();
+    input.select();
+    input.addEventListener('input', () => {
+      let val = parseInt(input.value) || 0;
+      val = Math.min(999, Math.max(0, val));
+      userData.assessments[exercise] = val;
+    });
+    input.addEventListener('blur', () => {
+      const div = document.createElement('div');
+      div.className = 'number-display';
+      div.id = 'display-' + exercise;
+      div.textContent = input.value || 0;
+      div.onclick = () => makeEditable(exercise);
+      input.replaceWith(div);
+    });
+  }
+
+  // --- ASSESSMENT SUBMIT ---
+  function submitAssessment(exercise, nextScreen, threshold) {
+    const display = document.getElementById('display-' + exercise);
+    const count = display.tagName === 'INPUT'
+      ? parseInt(display.value) || 0
+      : parseInt(display.textContent) || 0;
+    userData.assessments[exercise] = count;
+
     if (count >= threshold) {
-      pendingModalExercise = exercise;
-      pendingModalNext = nextScreen;
+      pendingExercise = exercise;
+      pendingNext = nextScreen;
       document.getElementById('confirm-modal').classList.add('active');
       return;
     }
     goTo(nextScreen);
   }
 
-  function closeModal(confirmed) {
-    document.getElementById('confirm-modal').classList.remove('active');
-    if (confirmed) {
-      goTo(pendingModalNext);
-    } else {
-      // Reset the count so they recount
-      document.getElementById('count-' + pendingModalExercise).textContent = '0';
-      userData.assessments[pendingModalExercise] = 0;
-    }
-    pendingModalExercise = null;
-    pendingModalNext = null;
-  }
+  function submitPull() {
+    const display = document.getElementById('display-pull');
+    const count = display.tagName === 'INPUT'
+      ? parseInt(display.value) || 0
+      : parseInt(display.textContent) || 0;
+    userData.assessments.pull = count;
 
-  function finishOnboarding() {
-    const pull = userData.assessments.pull;
-    const threshold = HIGH_REP_THRESHOLDS.pull;
-    if (pull >= threshold) {
-      pendingModalExercise = 'pull';
-      pendingModalNext = 'screen-complete';
+    if (count >= 15) {
+      pendingExercise = 'pull';
+      pendingNext = 'complete';
       document.getElementById('confirm-modal').classList.add('active');
       return;
     }
-    completeOnboarding();
+    buildPlan();
   }
 
-  function completeOnboarding() {
-    // Save to localStorage for now
-    localStorage.setItem('calitrack_user', JSON.stringify(userData));
-    // Calculate tiers
-    const tiers = calculateTiers(userData.assessments, userData.hasBar);
-    localStorage.setItem('calitrack_tiers', JSON.stringify(tiers));
-    // Show completion
-    showCompletionScreen();
+  function closeModal(confirmed) {
+    document.getElementById('confirm-modal').classList.remove('active');
+    if (confirmed) {
+      if (pendingNext === 'complete') {
+        buildPlan();
+      } else {
+        goTo(pendingNext);
+      }
+    } else {
+      const display = document.getElementById('display-' + pendingExercise);
+      if (display.tagName === 'INPUT') {
+        display.value = 0;
+      } else {
+        display.textContent = 0;
+      }
+      userData.assessments[pendingExercise] = 0;
+    }
+    pendingExercise = null;
+    pendingNext = null;
   }
 
-  function calculateTiers(assessments, hasBar) {
-    return {
-      pushup: getPushupTier(assessments.pushup),
-      squat: getSquatTier(assessments.squat),
-      glute: getGlueTier(assessments.glute),
-      plank: getPlankTier(assessments.plank),
-      pull: getPullTier(assessments.pull, hasBar)
-    };
-  }
+  // --- TIER CALCULATION ---
+  const TIER_NAMES = {
+    pushup: ['Wall Pushups','Incline Pushups','Knee Pushups','Full Pushups','Full Pushups — Volume','Diamond Pushups','Archer Pushups'],
+    squat: ['Assisted Squat','Bodyweight Squat','Deep Squat','Narrow Squat','Lunge','Bulgarian Split Squat','Assisted Pistol','Pistol Squat'],
+    glute: ['Bridge Hold','Glute Bridge','Tempo Bridge','Single Leg Bridge','Elevated Single Leg Bridge'],
+    plank: ['Knee Plank','Full Plank','Elbow Plank','Side Plank','Long Lever Plank'],
+    pull_bar: ['Dead Hang','Active Hang','Negative Pullups','Chin Ups','Full Pullups','Wide Grip Pullups'],
+    pull_row: ['Door Row','Incline Table Row','Straight Leg Row','Elevated Feet Row','Single Arm Row']
+  };
 
   function getPushupTier(reps) {
     if (reps === 0) return 0;
-    if (reps <= 4) return 1;
+    if (reps <= 2) return 1;
     if (reps <= 14) return 2;
     if (reps <= 29) return 3;
     return 4;
@@ -676,28 +787,62 @@
     return 2;
   }
 
-  function getPullTier(value, hasBar) {
+  function getPullTier(pullups, hasBar) {
     if (hasBar) {
-      if (value < 15) return 0;
-      if (value < 30) return 1;
-      return 2;
+      // Bar path — based on pullup count
+      if (pullups === 0) return 0;       // Dead hang
+      if (pullups <= 2) return 1;        // Active hang — buffer for psychological 1
+      if (pullups <= 5) return 2;        // Negatives
+      if (pullups <= 9) return 3;        // Chin ups
+      return 4;                          // Full pullups
     } else {
-      return 0;
+      // No bar — everyone starts at Tier 0 of row ladder regardless
+      // Pullup count still used: if they found a bar and did some, place higher
+      if (pullups === 0) return 0;
+      if (pullups <= 2) return 0;        // Still start at rows from beginning
+      if (pullups <= 5) return 1;        // Can skip to incline row
+      return 2;                          // Start at straight leg row
     }
   }
 
-  function showCompletionScreen() {
-    const user = JSON.parse(localStorage.getItem('calitrack_user'));
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.body.innerHTML += `
-      <div class="screen active" style="text-align:center; align-items:center; justify-content:center;">
-        <div class="logo">CaliTrack</div>
-        <div style="font-size:48px; margin-bottom:24px;">🎯</div>
-        <h2 class="headline">Your plan is ready,<br><span>${user.name}</span></h2>
-        <p class="subtext" style="max-width:300px">We have placed you at the right starting point for every exercise. Your first session is waiting.</p>
-        <button class="primary-btn" style="max-width:280px" onclick="alert('Session screen coming next!')">Start First Session →</button>
+  function buildPlan() {
+    const a = userData.assessments;
+    const hasBar = userData.hasBar;
+
+    const tiers = {
+      pushup: getPushupTier(a.pushup),
+      squat: getSquatTier(a.squat),
+      glute: getGlueTier(a.glute),
+      plank: getPlankTier(a.plank),
+      pull: getPullTier(a.pull, hasBar)
+    };
+
+    localStorage.setItem('calitrack_user', JSON.stringify(userData));
+    localStorage.setItem('calitrack_tiers', JSON.stringify(tiers));
+
+    // Build completion screen
+    document.getElementById('complete-headline').innerHTML =
+      `Your plan is ready,<br><span style="color:#c8f135">${userData.name}</span>`;
+
+    const pullPath = hasBar ? 'pull_bar' : 'pull_row';
+
+    const exercises = [
+      { label: 'Push', tier: tiers.pushup, names: TIER_NAMES.pushup },
+      { label: 'Pull', tier: tiers.pull, names: TIER_NAMES[pullPath] },
+      { label: 'Squat', tier: tiers.squat, names: TIER_NAMES.squat },
+      { label: 'Hinge', tier: tiers.glute, names: TIER_NAMES.glute },
+      { label: 'Core', tier: tiers.plank, names: TIER_NAMES.plank }
+    ];
+
+    const summaryEl = document.getElementById('tier-summary');
+    summaryEl.innerHTML = exercises.map(e => `
+      <div class="tier-row">
+        <span class="tier-exercise">${e.label}</span>
+        <span class="tier-level">Starting at ${e.names[e.tier]}</span>
       </div>
-    `;
+    `).join('');
+
+    goTo('screen-complete');
   }
 </script>
 
