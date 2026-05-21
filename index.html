@@ -145,11 +145,7 @@
     }
 
     .option-btn:hover { border-color: #c8f135; }
-
-    .option-btn.selected {
-      border-color: #c8f135;
-      background: #1a2a00;
-    }
+    .option-btn.selected { border-color: #c8f135; background: #1a2a00; }
 
     .option-icon { font-size: 20px; width: 32px; text-align: center; }
     .option-text { flex: 1; }
@@ -240,7 +236,6 @@
     .primary-btn:active { transform: scale(0.97); }
     .primary-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    /* Landing */
     #screen-landing {
       text-align: center;
       align-items: center;
@@ -292,7 +287,6 @@
       color: #444;
     }
 
-    /* Modal */
     .confirm-modal {
       display: none;
       position: fixed;
@@ -314,11 +308,7 @@
       max-width: 400px;
     }
 
-    .modal-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
+    .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
 
     .modal-text {
       font-size: 14px;
@@ -328,7 +318,6 @@
     }
 
     .modal-highlight { color: #c8f135; font-weight: 600; }
-
     .modal-btn-row { display: flex; gap: 10px; }
 
     .modal-confirm {
@@ -355,17 +344,7 @@
       cursor: pointer;
     }
 
-    /* Completion */
-    .completion-screen {
-      text-align: center;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .tier-summary {
-      width: 100%;
-      margin: 24px 0;
-    }
+    .tier-summary { width: 100%; margin: 24px 0; }
 
     .tier-row {
       display: flex;
@@ -379,6 +358,16 @@
     .tier-row:last-child { border-bottom: none; }
     .tier-exercise { color: #888; }
     .tier-level { color: #c8f135; font-weight: 600; font-size: 13px; }
+
+    .saving-indicator {
+      text-align: center;
+      font-size: 13px;
+      color: #555;
+      margin-top: 12px;
+    }
+
+    .saving-indicator.success { color: #c8f135; }
+    .saving-indicator.error { color: #ff4444; }
   </style>
 </head>
 <body>
@@ -388,7 +377,7 @@
   <div class="landing-logo">CaliTrack</div>
   <h1 class="landing-headline">Train smart.<br><span style="color:#c8f135">Progress automatically.</span></h1>
   <p class="landing-sub">No planning. No guessing. The app handles your progression so you just show up.</p>
-  <button class="landing-btn" onclick="goTo('screen-name')">Get Started</button>
+  <button class="landing-btn" onclick="checkReturningUser()">Get Started</button>
   <p class="landing-tagline">Free · No equipment needed to start</p>
 </div>
 
@@ -549,14 +538,14 @@
   <button class="primary-btn" onclick="submitAssessment('plank', 'screen-assess-pull', 90)">Continue</button>
 </div>
 
-<!-- STEP 8: PULL — bar version shown by default, updated by JS -->
+<!-- STEP 8: PULL -->
 <div class="screen" id="screen-assess-pull">
   <div class="logo">CaliTrack</div>
   <div class="progress-bar"><div class="progress-fill" style="width:88%"></div></div>
   <button class="back-btn" onclick="goTo('screen-assess-plank')">← Back</button>
   <div class="step-indicator">Step 8 of 9</div>
-  <h2 class="headline" id="pull-question-headline">How many<br><span>pullups</span> can you do?</h2>
-  <p class="subtext" id="pull-question-sub">Dead hang start, pull until chin clears the bar, lower with control. Zero is a completely valid answer.</p>
+  <h2 class="headline">How many<br><span>pullups</span> can you do?</h2>
+  <p class="subtext">Dead hang start, pull until chin clears the bar, lower with control. Zero is a completely valid answer.</p>
   <div class="instruction-card" id="pull-instruction-card">
     <strong>Do it now for accuracy</strong>
     Find any bar — a playground bar, tree branch, slab edge — and try right now. Even zero tells us exactly where to start you.
@@ -567,7 +556,7 @@
     <button class="number-btn" onclick="adjustCount('pull', 1)">+</button>
   </div>
   <div class="number-hint">Tap the number to type directly</div>
-  <div class="number-unit" id="pull-unit">clean reps</div>
+  <div class="number-unit">clean reps</div>
   <button class="primary-btn" onclick="submitPull()">Build my plan →</button>
 </div>
 
@@ -581,7 +570,8 @@
     <p class="subtext">We have placed you at the right starting point for every exercise. Your first session is waiting.</p>
   </div>
   <div class="tier-summary" id="tier-summary"></div>
-  <button class="primary-btn" style="margin-top:16px" onclick="alert('Session screen — coming next build!')">Start First Session →</button>
+  <button class="primary-btn" style="margin-top:16px" id="btn-start-session" onclick="alert('Session screen — coming next build!')">Start First Session →</button>
+  <div class="saving-indicator" id="saving-indicator">Saving your plan...</div>
 </div>
 
 <!-- CONFIRMATION MODAL -->
@@ -597,6 +587,83 @@
 </div>
 
 <script>
+  // ── CONFIG ──────────────────────────────────────────────
+  const SUPABASE_URL = 'https://mfenwsnfkathisvlkyxu.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1mZW53c25ma2F0aGlzdmxreXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTU2MjYsImV4cCI6MjA5NDkzMTYyNn0.hR5PGwi98uUyOMOhSELr2E71ogxOhN1tO54xYYZw5tI';
+
+  // ── DEVICE ID ────────────────────────────────────────────
+  function getDeviceId() {
+    let id = localStorage.getItem('calitrack_device_id');
+    if (!id) {
+      id = 'ct_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+      localStorage.setItem('calitrack_device_id', id);
+    }
+    return id;
+  }
+
+  // ── SUPABASE HELPERS ─────────────────────────────────────
+  async function supabaseQuery(method, table, body = null, filter = '') {
+    const url = `${SUPABASE_URL}/rest/v1/${table}${filter}`;
+    const res = await fetch(url, {
+      method,
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': method === 'POST' ? 'return=representation' : ''
+      },
+      body: body ? JSON.stringify(body) : null
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return method === 'DELETE' ? null : res.json();
+  }
+
+  async function checkReturningUser() {
+    const deviceId = getDeviceId();
+    try {
+      const rows = await supabaseQuery('GET', 'users', null, `?device_id=eq.${deviceId}&limit=1`);
+      if (rows && rows.length > 0) {
+        // Returning user — load their data and go to home screen
+        localStorage.setItem('calitrack_user', JSON.stringify(rows[0]));
+        showReturningUser(rows[0]);
+        return;
+      }
+    } catch (e) {
+      console.log('Check failed, continuing to onboarding:', e);
+    }
+    goTo('screen-name');
+  }
+
+  function showReturningUser(userData) {
+    // Placeholder — home screen comes in next build
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.body.insertAdjacentHTML('beforeend', `
+      <div class="screen active" id="screen-home-temp" style="text-align:center;align-items:center;justify-content:center;">
+        <div class="logo">CaliTrack</div>
+        <div style="font-size:40px;margin-bottom:20px">👋</div>
+        <h2 class="headline">Welcome back,<br><span>${userData.name}</span></h2>
+        <p class="subtext" style="max-width:280px;margin-top:12px">Your progress is saved. The home screen is coming in the next build.</p>
+      </div>
+    `);
+  }
+
+  async function saveUserToSupabase(userData, tiers) {
+    const deviceId = getDeviceId();
+    const payload = {
+      device_id: deviceId,
+      name: userData.name,
+      training_days: userData.trainingDays,
+      has_bar: userData.hasBar,
+      pushup_position: tiers.pushup,
+      squat_position: tiers.squat,
+      glute_position: tiers.glute,
+      plank_position: tiers.plank,
+      pull_position: tiers.pull
+    };
+    return supabaseQuery('POST', 'users', payload);
+  }
+
+  // ── USER DATA ────────────────────────────────────────────
   const userData = {
     name: '',
     trainingDays: 0,
@@ -607,14 +674,14 @@
   let pendingNext = null;
   let pendingExercise = null;
 
-  // --- NAVIGATION ---
+  // ── NAVIGATION ───────────────────────────────────────────
   function goTo(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
     window.scrollTo(0, 0);
   }
 
-  // --- STEP 1: NAME ---
+  // ── STEP 1: NAME ─────────────────────────────────────────
   function submitName() {
     const val = document.getElementById('input-name').value.trim();
     if (!val) { document.getElementById('input-name').focus(); return; }
@@ -622,7 +689,7 @@
     goTo('screen-days');
   }
 
-  // --- STEP 2: DAYS ---
+  // ── STEP 2: DAYS ─────────────────────────────────────────
   let selectedDays = 0;
   function selectDays(btn, days) {
     document.querySelectorAll('#screen-days .option-btn').forEach(b => b.classList.remove('selected'));
@@ -636,34 +703,25 @@
     goTo('screen-equipment');
   }
 
-  // --- STEP 3: EQUIPMENT ---
+  // ── STEP 3: EQUIPMENT ────────────────────────────────────
   function selectEquipment(btn, hasBar) {
     document.querySelectorAll('#screen-equipment .option-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
     userData.hasBar = hasBar;
     document.getElementById('btn-equipment').disabled = false;
-
-    // Update pull question based on equipment choice
-    if (!hasBar) {
-      document.getElementById('pull-question-headline').innerHTML = 'How many<br><span>pullups</span> can you do?';
-      document.getElementById('pull-question-sub').textContent = 'Find any bar — a slab edge, tree branch, or playground bar — and try. Even zero tells us exactly where to start you.';
-      document.getElementById('pull-instruction-card').innerHTML = '<strong>Do it now for accuracy</strong>Go find any bar you can hang from and try. If truly no bar exists anywhere, enter 0 and we will start you on the row progression.';
-    }
   }
 
-  // --- NUMBER INPUT ---
+  // ── NUMBER INPUT ─────────────────────────────────────────
   function adjustCount(exercise, delta) {
     const display = document.getElementById('display-' + exercise);
     if (display.tagName === 'INPUT') {
       let val = parseInt(display.value) || 0;
-      val = Math.max(0, val + delta);
-      display.value = val;
-      userData.assessments[exercise] = val;
+      display.value = Math.max(0, val + delta);
+      userData.assessments[exercise] = parseInt(display.value);
     } else {
       let val = parseInt(display.textContent) || 0;
-      val = Math.max(0, val + delta);
-      display.textContent = val;
-      userData.assessments[exercise] = val;
+      display.textContent = Math.max(0, val + delta);
+      userData.assessments[exercise] = parseInt(display.textContent);
     }
   }
 
@@ -682,9 +740,7 @@
     input.focus();
     input.select();
     input.addEventListener('input', () => {
-      let val = parseInt(input.value) || 0;
-      val = Math.min(999, Math.max(0, val));
-      userData.assessments[exercise] = val;
+      userData.assessments[exercise] = Math.min(999, Math.max(0, parseInt(input.value) || 0));
     });
     input.addEventListener('blur', () => {
       const div = document.createElement('div');
@@ -696,14 +752,13 @@
     });
   }
 
-  // --- ASSESSMENT SUBMIT ---
+  // ── ASSESSMENT SUBMIT ────────────────────────────────────
   function submitAssessment(exercise, nextScreen, threshold) {
     const display = document.getElementById('display-' + exercise);
     const count = display.tagName === 'INPUT'
       ? parseInt(display.value) || 0
       : parseInt(display.textContent) || 0;
     userData.assessments[exercise] = count;
-
     if (count >= threshold) {
       pendingExercise = exercise;
       pendingNext = nextScreen;
@@ -719,7 +774,6 @@
       ? parseInt(display.value) || 0
       : parseInt(display.textContent) || 0;
     userData.assessments.pull = count;
-
     if (count >= 15) {
       pendingExercise = 'pull';
       pendingNext = 'complete';
@@ -732,110 +786,95 @@
   function closeModal(confirmed) {
     document.getElementById('confirm-modal').classList.remove('active');
     if (confirmed) {
-      if (pendingNext === 'complete') {
-        buildPlan();
-      } else {
-        goTo(pendingNext);
-      }
+      pendingNext === 'complete' ? buildPlan() : goTo(pendingNext);
     } else {
       const display = document.getElementById('display-' + pendingExercise);
-      if (display.tagName === 'INPUT') {
-        display.value = 0;
-      } else {
-        display.textContent = 0;
-      }
+      if (display.tagName === 'INPUT') display.value = 0;
+      else display.textContent = 0;
       userData.assessments[pendingExercise] = 0;
     }
     pendingExercise = null;
     pendingNext = null;
   }
 
-  // --- TIER CALCULATION ---
+  // ── TIER CALCULATION ─────────────────────────────────────
   const TIER_NAMES = {
     pushup: ['Wall Pushups','Incline Pushups','Knee Pushups','Full Pushups','Full Pushups — Volume','Diamond Pushups','Archer Pushups'],
-    squat: ['Assisted Squat','Bodyweight Squat','Deep Squat','Narrow Squat','Lunge','Bulgarian Split Squat','Assisted Pistol','Pistol Squat'],
-    glute: ['Bridge Hold','Glute Bridge','Tempo Bridge','Single Leg Bridge','Elevated Single Leg Bridge'],
-    plank: ['Knee Plank','Full Plank','Elbow Plank','Side Plank','Long Lever Plank'],
+    squat:  ['Assisted Squat','Bodyweight Squat','Deep Squat','Narrow Squat','Lunge','Bulgarian Split Squat','Assisted Pistol','Pistol Squat'],
+    glute:  ['Bridge Hold','Glute Bridge','Tempo Bridge','Single Leg Bridge','Elevated Single Leg Bridge'],
+    plank:  ['Knee Plank','Full Plank','Elbow Plank','Side Plank','Long Lever Plank'],
     pull_bar: ['Dead Hang','Active Hang','Negative Pullups','Chin Ups','Full Pullups','Wide Grip Pullups'],
     pull_row: ['Door Row','Incline Table Row','Straight Leg Row','Elevated Feet Row','Single Arm Row']
   };
 
-  function getPushupTier(reps) {
-    if (reps === 0) return 0;
-    if (reps <= 2) return 1;
-    if (reps <= 14) return 2;
-    if (reps <= 29) return 3;
-    return 4;
+  function getPushupTier(r) {
+    if (r === 0) return 0;
+    if (r <= 2)  return 1;
+    if (r <= 8)  return 2;
+    if (r <= 14) return 3;
+    if (r <= 29) return 4;
+    return 5;
   }
 
-  function getSquatTier(reps) {
-    if (reps <= 5) return 0;
-    if (reps <= 20) return 1;
-    if (reps <= 40) return 2;
+  function getSquatTier(r) {
+    if (r <= 5)  return 0;
+    if (r <= 20) return 1;
+    if (r <= 40) return 2;
     return 3;
   }
 
-  function getGlueTier(reps) {
-    if (reps <= 5) return 0;
-    if (reps <= 20) return 1;
+  function getGlueTier(r) {
+    if (r <= 5)  return 0;
+    if (r <= 20) return 1;
     return 2;
   }
 
-  function getPlankTier(seconds) {
-    if (seconds < 15) return 0;
-    if (seconds < 30) return 1;
+  function getPlankTier(s) {
+    if (s < 15) return 0;
+    if (s < 30) return 1;
     return 2;
   }
 
-  function getPullTier(pullups, hasBar) {
+  function getPullTier(r, hasBar) {
     if (hasBar) {
-      // Bar path — based on pullup count
-      if (pullups === 0) return 0;       // Dead hang
-      if (pullups <= 2) return 1;        // Active hang — buffer for psychological 1
-      if (pullups <= 5) return 2;        // Negatives
-      if (pullups <= 9) return 3;        // Chin ups
-      return 4;                          // Full pullups
+      if (r === 0) return 0;
+      if (r <= 2)  return 1;
+      if (r <= 5)  return 2;
+      if (r <= 9)  return 3;
+      return 4;
     } else {
-      // No bar — everyone starts at Tier 0 of row ladder regardless
-      // Pullup count still used: if they found a bar and did some, place higher
-      if (pullups === 0) return 0;
-      if (pullups <= 2) return 0;        // Still start at rows from beginning
-      if (pullups <= 5) return 1;        // Can skip to incline row
-      return 2;                          // Start at straight leg row
+      if (r <= 2)  return 0;
+      if (r <= 5)  return 1;
+      return 2;
     }
   }
 
-  function buildPlan() {
+  // ── BUILD PLAN ───────────────────────────────────────────
+  async function buildPlan() {
     const a = userData.assessments;
-    const hasBar = userData.hasBar;
-
     const tiers = {
       pushup: getPushupTier(a.pushup),
-      squat: getSquatTier(a.squat),
-      glute: getGlueTier(a.glute),
-      plank: getPlankTier(a.plank),
-      pull: getPullTier(a.pull, hasBar)
+      squat:  getSquatTier(a.squat),
+      glute:  getGlueTier(a.glute),
+      plank:  getPlankTier(a.plank),
+      pull:   getPullTier(a.pull, userData.hasBar)
     };
 
-    localStorage.setItem('calitrack_user', JSON.stringify(userData));
-    localStorage.setItem('calitrack_tiers', JSON.stringify(tiers));
+    localStorage.setItem('calitrack_user', JSON.stringify({ ...userData, tiers }));
 
-    // Build completion screen
+    const pullPath = userData.hasBar ? 'pull_bar' : 'pull_row';
+    const exercises = [
+      { label: 'Push',  tier: tiers.pushup, names: TIER_NAMES.pushup },
+      { label: 'Pull',  tier: tiers.pull,   names: TIER_NAMES[pullPath] },
+      { label: 'Squat', tier: tiers.squat,  names: TIER_NAMES.squat },
+      { label: 'Hinge', tier: tiers.glute,  names: TIER_NAMES.glute },
+      { label: 'Core',  tier: tiers.plank,  names: TIER_NAMES.plank }
+    ];
+
     document.getElementById('complete-headline').innerHTML =
       `Your plan is ready,<br><span style="color:#c8f135">${userData.name}</span>`;
 
-    const pullPath = hasBar ? 'pull_bar' : 'pull_row';
-
-    const exercises = [
-      { label: 'Push', tier: tiers.pushup, names: TIER_NAMES.pushup },
-      { label: 'Pull', tier: tiers.pull, names: TIER_NAMES[pullPath] },
-      { label: 'Squat', tier: tiers.squat, names: TIER_NAMES.squat },
-      { label: 'Hinge', tier: tiers.glute, names: TIER_NAMES.glute },
-      { label: 'Core', tier: tiers.plank, names: TIER_NAMES.plank }
-    ];
-
-    const summaryEl = document.getElementById('tier-summary');
-    summaryEl.innerHTML = exercises.map(e => `
+    document.getElementById('tier-summary').innerHTML = exercises.map(e => `
       <div class="tier-row">
         <span class="tier-exercise">${e.label}</span>
         <span class="tier-level">Starting at ${e.names[e.tier]}</span>
@@ -843,6 +882,18 @@
     `).join('');
 
     goTo('screen-complete');
+
+    // Save to Supabase
+    const indicator = document.getElementById('saving-indicator');
+    try {
+      await saveUserToSupabase(userData, tiers);
+      indicator.textContent = '✓ Progress saved';
+      indicator.className = 'saving-indicator success';
+    } catch (err) {
+      console.error('Save failed:', err);
+      indicator.textContent = 'Saved locally — will sync when online';
+      indicator.className = 'saving-indicator error';
+    }
   }
 </script>
 
