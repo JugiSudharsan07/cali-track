@@ -367,7 +367,240 @@
     }
 
     .saving-indicator.success { color: #c8f135; }
-    .saving-indicator.error { color: #ff4444; }
+    .saving-indicator.error { color: #ff6b6b; }
+
+    /* ── HOME SCREEN ── */
+    #screen-home {
+      justify-content: flex-start;
+      padding-top: 52px;
+      padding-bottom: 100px;
+    }
+
+    .home-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .home-logo {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: #555;
+      text-transform: uppercase;
+    }
+
+    .home-greeting {
+      font-size: 14px;
+      color: #888;
+    }
+
+    .home-greeting span {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .today-card {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .today-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .today-status {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
+    }
+
+    .today-status.training { color: #c8f135; }
+    .today-status.rest { color: #888; }
+
+    .today-sub {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .session-btn {
+      background: #c8f135;
+      color: #0a0a0a;
+      border: none;
+      padding: 14px 24px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.1s;
+      letter-spacing: 0.03em;
+    }
+
+    .session-btn:active { transform: scale(0.97); }
+
+    .session-btn.rest-btn {
+      background: #1a1a1a;
+      color: #888;
+      border: 1px solid #2a2a2a;
+    }
+
+    .calendar-section {
+      margin-bottom: 24px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    .calendar-strip {
+      display: flex;
+      gap: 6px;
+      justify-content: space-between;
+    }
+
+    .cal-day {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cal-day-name {
+      font-size: 10px;
+      color: #444;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .cal-day-name.today { color: #c8f135; }
+
+    .cal-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      border: 1px solid #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .cal-dot.trained { background: #c8f135; border-color: #c8f135; }
+    .cal-dot.rest-done { background: #1a1a1a; border-color: #333; }
+    .cal-dot.today-dot { border-color: #c8f135; color: #c8f135; }
+    .cal-dot.future { opacity: 0.3; }
+
+    .exercise-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .exercise-card {
+      background: #111;
+      border: 1px solid #1a1a1a;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .ex-category {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 6px;
+    }
+
+    .ex-stage {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .ex-progress-track {
+      height: 3px;
+      background: #222;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .ex-progress-fill {
+      height: 100%;
+      background: #c8f135;
+      border-radius: 3px;
+      transition: width 0.6s ease;
+    }
+
+    .ex-progress-label {
+      font-size: 10px;
+      color: #444;
+      margin-top: 5px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 400px;
+      background: #0a0a0a;
+      border-top: 1px solid #1a1a1a;
+      display: flex;
+      padding: 12px 0 20px;
+    }
+
+    .nav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+
+    .nav-icon { font-size: 20px; }
+
+    .nav-label {
+      font-size: 10px;
+      color: #444;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-btn.active .nav-label { color: #c8f135; }
+
+    .loading-screen {
+      text-align: center;
+      color: #444;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -545,10 +778,10 @@
   <button class="back-btn" onclick="goTo('screen-assess-plank')">← Back</button>
   <div class="step-indicator">Step 8 of 9</div>
   <h2 class="headline">How many<br><span>pullups</span> can you do?</h2>
-  <p class="subtext">Dead hang start, pull until chin clears the bar, lower with control. Zero is a completely valid answer.</p>
-  <div class="instruction-card" id="pull-instruction-card">
+  <p class="subtext">Dead hang start, pull until chin clears the bar, lower with control. Zero is completely valid.</p>
+  <div class="instruction-card">
     <strong>Do it now for accuracy</strong>
-    Find any bar — a playground bar, tree branch, slab edge — and try right now. Even zero tells us exactly where to start you.
+    Find any bar — playground, tree branch, slab edge — and try right now. Even zero tells us exactly where to start you.
   </div>
   <div class="number-input-row">
     <button class="number-btn" onclick="adjustCount('pull', -1)">−</button>
@@ -564,14 +797,52 @@
 <div class="screen" id="screen-complete">
   <div class="logo">CaliTrack</div>
   <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-  <div style="text-align:center; margin-bottom: 24px;">
+  <div style="text-align:center; margin-bottom:24px;">
     <div style="font-size:44px; margin-bottom:16px">🎯</div>
     <h2 class="headline" id="complete-headline">Your plan is ready</h2>
-    <p class="subtext">We have placed you at the right starting point for every exercise. Your first session is waiting.</p>
+    <p class="subtext">We have placed you at the right starting point for every exercise.</p>
   </div>
   <div class="tier-summary" id="tier-summary"></div>
-  <button class="primary-btn" style="margin-top:16px" id="btn-start-session" onclick="alert('Session screen — coming next build!')">Start First Session →</button>
+  <button class="primary-btn" style="margin-top:16px" id="btn-start-session" onclick="goToHome()">Go to Home →</button>
   <div class="saving-indicator" id="saving-indicator">Saving your plan...</div>
+</div>
+
+<!-- HOME SCREEN -->
+<div class="screen" id="screen-home">
+  <div class="home-topbar">
+    <div class="home-logo">CaliTrack</div>
+    <div class="home-greeting">Hey, <span id="home-name">there</span></div>
+  </div>
+
+  <div class="today-card">
+    <div class="today-label">Today</div>
+    <div class="today-status" id="today-status">Loading...</div>
+    <div class="today-sub" id="today-sub"></div>
+    <button class="session-btn" id="today-btn" onclick="startSession()">Start Session →</button>
+  </div>
+
+  <div class="calendar-section">
+    <div class="section-label">This week</div>
+    <div class="calendar-strip" id="calendar-strip"></div>
+  </div>
+
+  <div class="section-label">Your progress</div>
+  <div class="exercise-grid" id="exercise-grid"></div>
+
+  <div class="bottom-nav">
+    <button class="nav-btn active" onclick="goTo('screen-home')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">HOME</span>
+    </button>
+    <button class="nav-btn" onclick="alert('History coming soon')">
+      <span class="nav-icon">📋</span>
+      <span class="nav-label">HISTORY</span>
+    </button>
+    <button class="nav-btn" onclick="alert('Settings coming soon')">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-label">SETTINGS</span>
+    </button>
+  </div>
 </div>
 
 <!-- CONFIRMATION MODAL -->
@@ -587,11 +858,23 @@
 </div>
 
 <script>
-  // ── CONFIG ──────────────────────────────────────────────
   const SUPABASE_URL = 'https://mfenwsnfkathisvlkyxu.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1mZW53c25ma2F0aGlzdmxreXh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTU2MjYsImV4cCI6MjA5NDkzMTYyNn0.hR5PGwi98uUyOMOhSELr2E71ogxOhN1tO54xYYZw5tI';
 
-  // ── DEVICE ID ────────────────────────────────────────────
+  const TIER_NAMES = {
+    pushup: ['Wall Pushups','Incline Pushups','Knee Pushups','Full Pushups','Full Pushups — Volume','Diamond Pushups','Archer Pushups'],
+    squat:  ['Assisted Squat','Bodyweight Squat','Deep Squat','Narrow Squat','Lunge','Bulgarian Split Squat','Assisted Pistol','Pistol Squat'],
+    glute:  ['Bridge Hold','Glute Bridge','Tempo Bridge','Single Leg Bridge','Elevated Single Leg Bridge'],
+    plank:  ['Knee Plank','Full Plank','Elbow Plank','Side Plank','Long Lever Plank'],
+    pull_bar: ['Dead Hang','Active Hang','Negative Pullups','Chin Ups','Full Pullups','Wide Grip Pullups'],
+    pull_row: ['Door Row','Incline Table Row','Straight Leg Row','Elevated Feet Row','Single Arm Row']
+  };
+
+  const TIER_MAX = {
+    pushup: 6, squat: 7, glute: 4, plank: 4, pull: 5
+  };
+
+  // ── DEVICE ID ──
   function getDeviceId() {
     let id = localStorage.getItem('calitrack_device_id');
     if (!id) {
@@ -601,7 +884,7 @@
     return id;
   }
 
-  // ── SUPABASE HELPERS ─────────────────────────────────────
+  // ── SUPABASE ──
   async function supabaseQuery(method, table, body = null, filter = '') {
     const url = `${SUPABASE_URL}/rest/v1/${table}${filter}`;
     const res = await fetch(url, {
@@ -618,70 +901,182 @@
     return method === 'DELETE' ? null : res.json();
   }
 
+  // ── CHECK RETURNING USER ──
   async function checkReturningUser() {
     const deviceId = getDeviceId();
     try {
       const rows = await supabaseQuery('GET', 'users', null, `?device_id=eq.${deviceId}&limit=1`);
       if (rows && rows.length > 0) {
-        // Returning user — load their data and go to home screen
+        currentUser = rows[0];
         localStorage.setItem('calitrack_user', JSON.stringify(rows[0]));
-        showReturningUser(rows[0]);
+        loadHomeScreen(rows[0]);
         return;
       }
     } catch (e) {
-      console.log('Check failed, continuing to onboarding:', e);
+      const cached = localStorage.getItem('calitrack_user');
+      if (cached) {
+        currentUser = JSON.parse(cached);
+        loadHomeScreen(currentUser);
+        return;
+      }
     }
     goTo('screen-name');
   }
 
-  function showReturningUser(userData) {
-    // Placeholder — home screen comes in next build
+  // ── HOME SCREEN ──
+  let currentUser = null;
+
+  function loadHomeScreen(user) {
+    goTo('screen-home');
+    document.getElementById('home-name').textContent = user.name;
+    buildCalendar(user);
+    buildExerciseGrid(user);
+    determineTodayStatus(user);
+  }
+
+  function determineTodayStatus(user) {
+    const statusEl = document.getElementById('today-status');
+    const subEl = document.getElementById('today-sub');
+    const btnEl = document.getElementById('today-btn');
+
+    const sessionsThisWeek = getSessionsThisWeek();
+    const trainingDays = user.training_days || 3;
+    const lastSession = localStorage.getItem('calitrack_last_session');
+    const today = new Date().toDateString();
+    const trainedToday = lastSession === today;
+
+    if (trainedToday) {
+      statusEl.textContent = 'Session Complete ✓';
+      statusEl.className = 'today-status training';
+      subEl.textContent = 'Great work today. Rest and recover.';
+      btnEl.textContent = 'View Today\'s Session';
+      btnEl.className = 'session-btn rest-btn';
+    } else if (sessionsThisWeek >= trainingDays) {
+      statusEl.textContent = 'Rest Day';
+      statusEl.className = 'today-status rest';
+      subEl.textContent = 'You\'ve hit your training target this week. Recovery is progress.';
+      btnEl.textContent = 'View Recovery Routine';
+      btnEl.className = 'session-btn rest-btn';
+    } else {
+      statusEl.textContent = 'Training Day';
+      statusEl.className = 'today-status training';
+      subEl.textContent = `Session ${sessionsThisWeek + 1} of ${trainingDays} this week`;
+      btnEl.textContent = 'Start Session →';
+      btnEl.className = 'session-btn';
+    }
+  }
+
+  function getSessionsThisWeek() {
+    const history = JSON.parse(localStorage.getItem('calitrack_week_sessions') || '[]');
+    const now = new Date();
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+    return history.filter(d => new Date(d) >= startOfWeek).length;
+  }
+
+  function buildCalendar(user) {
+    const strip = document.getElementById('calendar-strip');
+    const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    const today = new Date();
+    const todayIndex = today.getDay();
+    const history = JSON.parse(localStorage.getItem('calitrack_week_sessions') || '[]');
+
+    let html = '';
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() - todayIndex + i);
+      const dateStr = d.toDateString();
+      const isToday = i === todayIndex;
+      const isPast = i < todayIndex;
+      const trained = history.includes(dateStr);
+
+      let dotClass = 'cal-dot future';
+      let dotContent = '';
+
+      if (isToday) {
+        dotClass = 'cal-dot today-dot';
+        dotContent = '•';
+      } else if (isPast && trained) {
+        dotClass = 'cal-dot trained';
+        dotContent = '✓';
+      } else if (isPast) {
+        dotClass = 'cal-dot rest-done';
+        dotContent = '';
+      }
+
+      html += `
+        <div class="cal-day">
+          <span class="cal-day-name ${isToday ? 'today' : ''}">${days[i]}</span>
+          <div class="${dotClass}">${dotContent}</div>
+        </div>
+      `;
+    }
+    strip.innerHTML = html;
+  }
+
+  function buildExerciseGrid(user) {
+    const grid = document.getElementById('exercise-grid');
+    const hasBar = user.has_bar;
+    const pullKey = hasBar ? 'pull_bar' : 'pull_row';
+
+    const exercises = [
+      { label: 'Push', key: 'pushup', tier: user.pushup_position, names: TIER_NAMES.pushup, max: TIER_MAX.pushup },
+      { label: 'Pull', key: 'pull', tier: user.pull_position, names: TIER_NAMES[pullKey], max: TIER_MAX.pull },
+      { label: 'Squat', key: 'squat', tier: user.squat_position, names: TIER_NAMES.squat, max: TIER_MAX.squat },
+      { label: 'Hinge', key: 'glute', tier: user.glute_position, names: TIER_NAMES.glute, max: TIER_MAX.glute },
+      { label: 'Core', key: 'plank', tier: user.plank_position, names: TIER_NAMES.plank, max: TIER_MAX.plank }
+    ];
+
+    grid.innerHTML = exercises.map(e => {
+      const pct = Math.round((e.tier / e.max) * 100);
+      const stageName = e.names[e.tier] || e.names[0];
+      return `
+        <div class="exercise-card">
+          <div class="ex-category">${e.label}</div>
+          <div class="ex-stage">${stageName}</div>
+          <div class="ex-progress-track">
+            <div class="ex-progress-fill" style="width:${pct}%"></div>
+          </div>
+          <div class="ex-progress-label">Tier ${e.tier} of ${e.max}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function startSession() {
+    alert('Session screen — building next!');
+  }
+
+  function goToHome() {
+    if (currentUser) {
+      loadHomeScreen(currentUser);
+    } else {
+      const cached = localStorage.getItem('calitrack_user');
+      if (cached) {
+        currentUser = JSON.parse(cached);
+        loadHomeScreen(currentUser);
+      }
+    }
+  }
+
+  // ── NAVIGATION ──
+  function goTo(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.body.insertAdjacentHTML('beforeend', `
-      <div class="screen active" id="screen-home-temp" style="text-align:center;align-items:center;justify-content:center;">
-        <div class="logo">CaliTrack</div>
-        <div style="font-size:40px;margin-bottom:20px">👋</div>
-        <h2 class="headline">Welcome back,<br><span>${userData.name}</span></h2>
-        <p class="subtext" style="max-width:280px;margin-top:12px">Your progress is saved. The home screen is coming in the next build.</p>
-      </div>
-    `);
+    const el = document.getElementById(screenId);
+    if (el) el.classList.add('active');
+    window.scrollTo(0, 0);
   }
 
-  async function saveUserToSupabase(userData, tiers) {
-    const deviceId = getDeviceId();
-    const payload = {
-      device_id: deviceId,
-      name: userData.name,
-      training_days: userData.trainingDays,
-      has_bar: userData.hasBar,
-      pushup_position: tiers.pushup,
-      squat_position: tiers.squat,
-      glute_position: tiers.glute,
-      plank_position: tiers.plank,
-      pull_position: tiers.pull
-    };
-    return supabaseQuery('POST', 'users', payload);
-  }
-
-  // ── USER DATA ────────────────────────────────────────────
+  // ── ONBOARDING ──
   const userData = {
-    name: '',
-    trainingDays: 0,
-    hasBar: null,
+    name: '', trainingDays: 0, hasBar: null,
     assessments: { pushup: 0, squat: 0, glute: 0, plank: 0, pull: 0 }
   };
 
   let pendingNext = null;
   let pendingExercise = null;
 
-  // ── NAVIGATION ───────────────────────────────────────────
-  function goTo(screenId) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(screenId).classList.add('active');
-    window.scrollTo(0, 0);
-  }
-
-  // ── STEP 1: NAME ─────────────────────────────────────────
   function submitName() {
     const val = document.getElementById('input-name').value.trim();
     if (!val) { document.getElementById('input-name').focus(); return; }
@@ -689,7 +1084,6 @@
     goTo('screen-days');
   }
 
-  // ── STEP 2: DAYS ─────────────────────────────────────────
   let selectedDays = 0;
   function selectDays(btn, days) {
     document.querySelectorAll('#screen-days .option-btn').forEach(b => b.classList.remove('selected'));
@@ -703,7 +1097,6 @@
     goTo('screen-equipment');
   }
 
-  // ── STEP 3: EQUIPMENT ────────────────────────────────────
   function selectEquipment(btn, hasBar) {
     document.querySelectorAll('#screen-equipment .option-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
@@ -711,16 +1104,13 @@
     document.getElementById('btn-equipment').disabled = false;
   }
 
-  // ── NUMBER INPUT ─────────────────────────────────────────
   function adjustCount(exercise, delta) {
     const display = document.getElementById('display-' + exercise);
     if (display.tagName === 'INPUT') {
-      let val = parseInt(display.value) || 0;
-      display.value = Math.max(0, val + delta);
+      display.value = Math.max(0, (parseInt(display.value) || 0) + delta);
       userData.assessments[exercise] = parseInt(display.value);
     } else {
-      let val = parseInt(display.textContent) || 0;
-      display.textContent = Math.max(0, val + delta);
+      display.textContent = Math.max(0, (parseInt(display.textContent) || 0) + delta);
       userData.assessments[exercise] = parseInt(display.textContent);
     }
   }
@@ -734,11 +1124,9 @@
     input.className = 'number-input-direct';
     input.id = 'display-' + exercise;
     input.value = current;
-    input.min = 0;
-    input.max = 999;
+    input.min = 0; input.max = 999;
     display.replaceWith(input);
-    input.focus();
-    input.select();
+    input.focus(); input.select();
     input.addEventListener('input', () => {
       userData.assessments[exercise] = Math.min(999, Math.max(0, parseInt(input.value) || 0));
     });
@@ -752,16 +1140,12 @@
     });
   }
 
-  // ── ASSESSMENT SUBMIT ────────────────────────────────────
   function submitAssessment(exercise, nextScreen, threshold) {
     const display = document.getElementById('display-' + exercise);
-    const count = display.tagName === 'INPUT'
-      ? parseInt(display.value) || 0
-      : parseInt(display.textContent) || 0;
+    const count = display.tagName === 'INPUT' ? parseInt(display.value)||0 : parseInt(display.textContent)||0;
     userData.assessments[exercise] = count;
     if (count >= threshold) {
-      pendingExercise = exercise;
-      pendingNext = nextScreen;
+      pendingExercise = exercise; pendingNext = nextScreen;
       document.getElementById('confirm-modal').classList.add('active');
       return;
     }
@@ -770,13 +1154,10 @@
 
   function submitPull() {
     const display = document.getElementById('display-pull');
-    const count = display.tagName === 'INPUT'
-      ? parseInt(display.value) || 0
-      : parseInt(display.textContent) || 0;
+    const count = display.tagName === 'INPUT' ? parseInt(display.value)||0 : parseInt(display.textContent)||0;
     userData.assessments.pull = count;
     if (count >= 15) {
-      pendingExercise = 'pull';
-      pendingNext = 'complete';
+      pendingExercise = 'pull'; pendingNext = 'complete';
       document.getElementById('confirm-modal').classList.add('active');
       return;
     }
@@ -785,71 +1166,40 @@
 
   function closeModal(confirmed) {
     document.getElementById('confirm-modal').classList.remove('active');
-    if (confirmed) {
-      pendingNext === 'complete' ? buildPlan() : goTo(pendingNext);
-    } else {
+    if (confirmed) { pendingNext === 'complete' ? buildPlan() : goTo(pendingNext); }
+    else {
       const display = document.getElementById('display-' + pendingExercise);
       if (display.tagName === 'INPUT') display.value = 0;
       else display.textContent = 0;
       userData.assessments[pendingExercise] = 0;
     }
-    pendingExercise = null;
-    pendingNext = null;
+    pendingExercise = null; pendingNext = null;
   }
 
-  // ── TIER CALCULATION ─────────────────────────────────────
-  const TIER_NAMES = {
-    pushup: ['Wall Pushups','Incline Pushups','Knee Pushups','Full Pushups','Full Pushups — Volume','Diamond Pushups','Archer Pushups'],
-    squat:  ['Assisted Squat','Bodyweight Squat','Deep Squat','Narrow Squat','Lunge','Bulgarian Split Squat','Assisted Pistol','Pistol Squat'],
-    glute:  ['Bridge Hold','Glute Bridge','Tempo Bridge','Single Leg Bridge','Elevated Single Leg Bridge'],
-    plank:  ['Knee Plank','Full Plank','Elbow Plank','Side Plank','Long Lever Plank'],
-    pull_bar: ['Dead Hang','Active Hang','Negative Pullups','Chin Ups','Full Pullups','Wide Grip Pullups'],
-    pull_row: ['Door Row','Incline Table Row','Straight Leg Row','Elevated Feet Row','Single Arm Row']
-  };
-
+  // ── TIER CALCULATION ──
   function getPushupTier(r) {
-    if (r === 0) return 0;
-    if (r <= 2)  return 1;
-    if (r <= 8)  return 2;
-    if (r <= 14) return 3;
-    if (r <= 29) return 4;
-    return 5;
+    if (r===0) return 0; if (r<=2) return 1; if (r<=8) return 2;
+    if (r<=14) return 3; if (r<=29) return 4; return 5;
   }
-
   function getSquatTier(r) {
-    if (r <= 5)  return 0;
-    if (r <= 20) return 1;
-    if (r <= 40) return 2;
-    return 3;
+    if (r<=5) return 0; if (r<=20) return 1; if (r<=40) return 2; return 3;
   }
-
   function getGlueTier(r) {
-    if (r <= 5)  return 0;
-    if (r <= 20) return 1;
-    return 2;
+    if (r<=5) return 0; if (r<=20) return 1; return 2;
   }
-
   function getPlankTier(s) {
-    if (s < 15) return 0;
-    if (s < 30) return 1;
-    return 2;
+    if (s<15) return 0; if (s<30) return 1; return 2;
   }
-
   function getPullTier(r, hasBar) {
     if (hasBar) {
-      if (r === 0) return 0;
-      if (r <= 2)  return 1;
-      if (r <= 5)  return 2;
-      if (r <= 9)  return 3;
-      return 4;
+      if (r===0) return 0; if (r<=2) return 1;
+      if (r<=5) return 2; if (r<=9) return 3; return 4;
     } else {
-      if (r <= 2)  return 0;
-      if (r <= 5)  return 1;
-      return 2;
+      if (r<=2) return 0; if (r<=5) return 1; return 2;
     }
   }
 
-  // ── BUILD PLAN ───────────────────────────────────────────
+  // ── BUILD PLAN ──
   async function buildPlan() {
     const a = userData.assessments;
     const tiers = {
@@ -859,8 +1209,6 @@
       plank:  getPlankTier(a.plank),
       pull:   getPullTier(a.pull, userData.hasBar)
     };
-
-    localStorage.setItem('calitrack_user', JSON.stringify({ ...userData, tiers }));
 
     const pullPath = userData.hasBar ? 'pull_bar' : 'pull_row';
     const exercises = [
@@ -873,7 +1221,6 @@
 
     document.getElementById('complete-headline').innerHTML =
       `Your plan is ready,<br><span style="color:#c8f135">${userData.name}</span>`;
-
     document.getElementById('tier-summary').innerHTML = exercises.map(e => `
       <div class="tier-row">
         <span class="tier-exercise">${e.label}</span>
@@ -883,19 +1230,31 @@
 
     goTo('screen-complete');
 
-    // Save to Supabase
     const indicator = document.getElementById('saving-indicator');
     try {
-      await saveUserToSupabase(userData, tiers);
+      const payload = {
+        device_id: getDeviceId(),
+        name: userData.name,
+        training_days: userData.trainingDays,
+        has_bar: userData.hasBar,
+        pushup_position: tiers.pushup,
+        squat_position: tiers.squat,
+        glute_position: tiers.glute,
+        plank_position: tiers.plank,
+        pull_position: tiers.pull
+      };
+      const saved = await supabaseQuery('POST', 'users', payload);
+      currentUser = saved[0];
+      localStorage.setItem('calitrack_user', JSON.stringify(currentUser));
       indicator.textContent = '✓ Progress saved';
       indicator.className = 'saving-indicator success';
     } catch (err) {
       console.error('Save failed:', err);
-      indicator.textContent = 'Saved locally — will sync when online';
+      localStorage.setItem('calitrack_user', JSON.stringify({ ...userData, ...tiers }));
+      indicator.textContent = 'Saved locally';
       indicator.className = 'saving-indicator error';
     }
   }
 </script>
-
 </body>
 </html>
