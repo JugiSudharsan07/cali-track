@@ -901,30 +901,8 @@
     return method === 'DELETE' ? null : res.json();
   }
 
-  // ── CHECK RETURNING USER ──
-async function checkReturningUser() {
-    const deviceId = getDeviceId();
-    try {
-      const rows = await supabaseQuery('GET', 'users', null, `?device_id=eq.${deviceId}&limit=1`);
-      if (rows && rows.length > 0) {
-        currentUser = rows[0];
-        localStorage.setItem('calitrack_user', JSON.stringify(rows[0]));
-        loadHomeScreen(rows[0]);
-        return;
-      }
-    } catch (e) {
-      const cached = localStorage.getItem('calitrack_user');
-      if (cached) {
-        currentUser = JSON.parse(cached);
-        loadHomeScreen(currentUser);
-        return;
-      }
-    }
-    goTo('screen-name');
-  }
-
   // Auto check on page load — skip landing for returning users
-window.addEventListener('load', async () => {
+  window.addEventListener('load', async () => {
     const deviceId = getDeviceId();
     const cached = localStorage.getItem('calitrack_user');
 
@@ -972,7 +950,7 @@ window.addEventListener('load', async () => {
       }
     }
 
-   // No data anywhere — new user sees landing
+    // No data anywhere — new user sees landing
     goTo('screen-landing');
   });
 
