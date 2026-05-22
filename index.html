@@ -1266,25 +1266,35 @@
   }
 
   // ── SESSION ────────────────────────────────────────────────
-  function buildSessionExercises(user) {
+function buildSessionExercises(user) {
     const pullLadder = user.has_bar ? 'pull_bar' : 'pull_row';
     return SESSION_ORDER.map(key => {
-      const tier       = user[key+'_position']   || 0;
-      const target     = user[key+'_target']     || 3;
-      const transition = user[key+'_transition'] || 0;
-     const ladderKey = key === 'pull' ? pullLadder : (key === 'push' ? 'pushup' : (key === 'glute' ? 'glute' : key));
+      const posKey  = key === 'push' ? 'pushup_position'  : key + '_position';
+      const tgtKey  = key === 'push' ? 'pushup_target'    : key + '_target';
+      const trnKey  = key === 'push' ? 'pushup_transition': key + '_transition';
+      const tier       = user[posKey]  || 0;
+      const target     = user[tgtKey]  || 3;
+      const transition = user[trnKey]  || 0;
+
+      let ladderKey;
+      if (key === 'pull') ladderKey = pullLadder;
+      else if (key === 'push') ladderKey = 'pushup';
+      else ladderKey = key;
+
       const ladder = TIER_NAMES[ladderKey];
-      const primaryName = ladder[Math.min(tier, ladder.length-1)];
+      if (!ladder) { console.error('No ladder for key:', key, ladderKey); return null; }
+
+      const primaryName = ladder[Math.min(tier, ladder.length - 1)];
       const isTimeBased = TIME_BASED_EXERCISES.includes(primaryName);
-      let primarySets = transition >= 2 ? 3 : 2;
+      const primarySets = transition >= 2 ? 3 : 2;
       let finisherName = null;
       let finisherReps = 0;
       if (transition > 0 && tier > 0) {
-        finisherName = ladder[Math.max(0, tier-1)];
+        finisherName = ladder[Math.max(0, tier - 1)];
         finisherReps = Math.max(3, Math.floor(target * 0.6));
       }
-      return { key, label:CATEGORY_LABELS[key], primaryName, primarySets, targetReps:target, isTimeBased, finisherName, finisherReps, tier, transition, currentAdjustedTarget:target };
-    });
+      return { key, label: CATEGORY_LABELS[key], primaryName, primarySets, targetReps: target, isTimeBased, finisherName, finisherReps, tier, transition, currentAdjustedTarget: target };
+    }).filter(Boolean);
   }
 
   function startSession() {
