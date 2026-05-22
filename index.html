@@ -924,14 +924,11 @@ async function checkReturningUser() {
   }
 
   // Auto check on page load — skip landing for returning users
-  window.addEventListener('load', async () => {
+window.addEventListener('load', async () => {
     const deviceId = getDeviceId();
     const cached = localStorage.getItem('calitrack_user');
-    if (cached) {
-      currentUser = JSON.parse(cached);
-      loadHomeScreen(currentUser);
-      return;
-    }
+
+    // Try Supabase first as source of truth
     try {
       const rows = await supabaseQuery('GET', 'users', null, `?device_id=eq.${deviceId}&limit=1`);
       if (rows && rows.length > 0) {
@@ -939,10 +936,44 @@ async function checkReturningUser() {
         localStorage.setItem('calitrack_user', JSON.stringify(rows[0]));
         loadHomeScreen(rows[0]);
         return;
+      } else if (cached) {
+        // localStorage has data but Supabase does not — re-save to Supabase
+        const localData = JSON.parse(cached);
+        try {
+          const payload = {
+            device_id: deviceId,
+            name: localData.name,
+            training_days: localData.training_days || localData.trainingDays,
+            has_bar: localData.has_bar || localData.hasBar,
+            pushup_position: localData.pushup_position || 0,
+            squat_position: localData.squat_position || 0,
+            glute_position: localData.glute_position || 0,
+            plank_position: localData.plank_position || 0,
+            pull_position: localData.pull_position || 0
+          };
+          const saved = await supabaseQuery('POST', 'users', payload);
+          currentUser = saved[0];
+          localStorage.setItem('calitrack_user', JSON.stringify(currentUser));
+          loadHomeScreen(currentUser);
+          return;
+        } catch (saveErr) {
+          // Re-save failed, use local data anyway
+          currentUser = localData;
+          loadHomeScreen(localData);
+          return;
+        }
       }
     } catch (e) {
-      // Network failed, stay on landing
+      // Supabase unreachable
+      if (cached) {
+        currentUser = JSON.parse(cached);
+        loadHomeScreen(currentUser);
+        return;
+      }
     }
+
+    // No data anywhere — new user
+    goTo('screen-name');
   });
 
   // ── HOME SCREEN ──
