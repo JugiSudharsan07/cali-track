@@ -1272,7 +1272,8 @@
       const tier       = user[key+'_position']   || 0;
       const target     = user[key+'_target']     || 3;
       const transition = user[key+'_transition'] || 0;
-      const ladder     = key==='pull' ? TIER_NAMES[pullLadder] : TIER_NAMES[key];
+     const ladderKey = key === 'pull' ? pullLadder : (key === 'push' ? 'pushup' : (key === 'glute' ? 'glute' : key));
+      const ladder = TIER_NAMES[ladderKey];
       const primaryName = ladder[Math.min(tier, ladder.length-1)];
       const isTimeBased = TIME_BASED_EXERCISES.includes(primaryName);
       let primarySets = transition >= 2 ? 3 : 2;
