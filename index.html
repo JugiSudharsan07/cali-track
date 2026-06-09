@@ -886,7 +886,7 @@
     <div style="font-size:13px; color:#888; margin-bottom:8px; text-align:center">Actual reps done</div>
     <div class="number-input-row" style="justify-content:center; max-width:280px; margin:0 auto 8px">
       <button class="number-btn" onclick="adjustActual(-1)">−</button>
-      <div style="font-size:52px; font-weight:700; color:#fff; text-align:center; flex:1; letter-spacing:-2px" id="actual-display">0</div>
+    <div style="font-size:52px; font-weight:700; color:#fff; text-align:center; flex:1; letter-spacing:-2px; cursor:pointer" id="actual-display" onclick="makeSessionNumberEditable('actual-display')">0</div>
       <button class="number-btn" onclick="adjustActual(1)">+</button>
     </div>
   </div>
@@ -918,6 +918,7 @@
     <div style="font-size:88px; font-weight:700; color:#c8f135; letter-spacing:-4px; margin-bottom:8px" id="rest-countdown">90</div>
     <div style="font-size:14px; color:#555; margin-bottom:40px">seconds</div>
     <div style="font-size:14px; color:#888; margin-bottom:48px" id="rest-next-label">Next: Set 2 of 2</div>
+    <div style="font-size:13px; color:#666; line-height:1.5; max-width:260px; text-align:center; margin:0 auto 28px">Rest builds strength. Muscles grow during recovery.</div>
     <button class="primary-btn" style="max-width:240px" onclick="skipRest()">Skip Rest →</button>
   </div>
 </div>
@@ -932,7 +933,7 @@
   <div style="font-size:13px; color:#888; margin-bottom:8px; text-align:center">Actual reps done</div>
   <div class="number-input-row" style="justify-content:center; max-width:280px; margin:0 auto 32px">
     <button class="number-btn" onclick="adjustFinisher(-1)">−</button>
-    <div style="font-size:52px; font-weight:700; color:#fff; text-align:center; flex:1" id="finisher-actual">0</div>
+    <div style="font-size:52px; font-weight:700; color:#fff; text-align:center; flex:1; cursor:pointer" id="finisher-actual" onclick="makeSessionNumberEditable('finisher-actual')">0</div>
     <button class="number-btn" onclick="adjustFinisher(1)">+</button>
   </div>
   <div style="margin-top:auto">
@@ -1020,7 +1021,25 @@
   const SESSION_ORDER = ['pull','push','squat','glute','plank'];
   const CATEGORY_LABELS = { pull:'Pull', push:'Push', squat:'Squat', glute:'Hinge', plank:'Core' };
   const TIME_BASED_EXERCISES = ['Dead Hang','Active Hang','Bridge Hold','Knee Plank','Full Plank','Elbow Plank','Side Plank','Long Lever Plank'];
-  const REST_SECONDS = { pull:120, push:90, squat:90, glute:90, plank:90 };
+  const STARTING_VOLUME = {
+    pushup: [8,6,6,6,15,5,4],
+    squat: [8,10,8,8,8,6,4,3],
+    glute: [10,10,8,6,5],
+    plank: [15,20,20,15,20],
+    pull_bar: [10,20,3,2,2,3],
+    pull_row: [8,8,6,5,4]
+  };
+  const FIRST_TARGET_FLOORS = {
+    'Wall Pushups': 10,
+    'Door Row': 10,
+    'Knee Pushups': 7,
+    'Glute Bridge': 8,
+    'Knee Plank': 12,
+    'Full Plank': 12,
+    'Elbow Plank': 12,
+    'Side Plank': 12,
+    'Long Lever Plank': 12
+  };
 
   // ── STATE ──────────────────────────────────────────────────
   let currentUser = null;
@@ -1058,7 +1077,6 @@
       'Content-Type': 'application/json'
     };
     if (method === 'POST') headers['Prefer'] = 'return=representation';
-    if (method === 'PATCH') headers['Prefer'] = 'return=representation';
     const res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : null });
     if (!res.ok) throw new Error(await res.text());
     if (method === 'DELETE') return null;
@@ -1231,8 +1249,32 @@
     strip.innerHTML = html;
   }
 
+  function getUserHasBar(user) {
+    return user.has_bar !== undefined ? user.has_bar : !!user.hasBar;
+  }
+
+  function getMovementKey(sessionKey) {
+    return sessionKey === 'push' ? 'pushup' : sessionKey;
+  }
+
+  function getUserPosition(user, movementKey) {
+    const value = user[`${movementKey}_position`] !== undefined ? user[`${movementKey}_position`] : user[movementKey];
+    return Math.max(0, parseInt(value) || 0);
+  }
+
+  function getUserTransition(user, movementKey) {
+    return Math.max(0, parseInt(user[`${movementKey}_transition`]) || 0);
+  }
+
+  function getUserTarget(user, movementKey, ladderKey, tier) {
+    const saved = parseInt(user[`${movementKey}_target`]);
+    if (saved > 0) return saved;
+    return getFirstSessionTarget(ladderKey, tier);
+  }
+
   function getLevelInfo(tier, maxTier) {
-    const pct = tier / maxTier;
+    const safeTier = Math.max(0, parseInt(tier) || 0);
+    const pct = safeTier / maxTier;
     if (pct < 0.25) return { label:'Beginner', cls:'level-beginner' };
     if (pct < 0.5)  return { label:'Intermediate', cls:'level-intermediate' };
     if (pct < 0.75) return { label:'Advanced', cls:'level-advanced' };
@@ -1241,13 +1283,13 @@
 
   function buildExerciseGrid(user) {
     const grid = document.getElementById('exercise-grid');
-    const pullKey = user.has_bar ? 'pull_bar' : 'pull_row';
+    const pullKey = getUserHasBar(user) ? 'pull_bar' : 'pull_row';
     const exercises = [
-      { label:'Push',  key:'pushup', tier:user.pushup_position, names:TIER_NAMES.pushup,    max:TIER_MAX.pushup },
-      { label:'Pull',  key:'pull',   tier:user.pull_position,   names:TIER_NAMES[pullKey],  max:TIER_MAX.pull },
-      { label:'Squat', key:'squat',  tier:user.squat_position,  names:TIER_NAMES.squat,     max:TIER_MAX.squat },
-      { label:'Hinge', key:'glute',  tier:user.glute_position,  names:TIER_NAMES.glute,     max:TIER_MAX.glute },
-      { label:'Core',  key:'plank',  tier:user.plank_position,  names:TIER_NAMES.plank,     max:TIER_MAX.plank }
+      { label:'Push',  key:'pushup', tier:getUserPosition(user, 'pushup'), names:TIER_NAMES.pushup,   max:TIER_MAX.pushup },
+      { label:'Pull',  key:'pull',   tier:getUserPosition(user, 'pull'),   names:TIER_NAMES[pullKey], max:TIER_MAX.pull },
+      { label:'Squat', key:'squat',  tier:getUserPosition(user, 'squat'),  names:TIER_NAMES.squat,    max:TIER_MAX.squat },
+      { label:'Hinge', key:'glute',  tier:getUserPosition(user, 'glute'),  names:TIER_NAMES.glute,    max:TIER_MAX.glute },
+      { label:'Core',  key:'plank',  tier:getUserPosition(user, 'plank'),  names:TIER_NAMES.plank,    max:TIER_MAX.plank }
     ];
     grid.innerHTML = exercises.map(e => {
       const pct = Math.round((e.tier / e.max) * 100);
@@ -1267,15 +1309,8 @@
 
   // ── SESSION ────────────────────────────────────────────────
 function buildSessionExercises(user) {
-    const pullLadder = user.has_bar ? 'pull_bar' : 'pull_row';
+    const pullLadder = getUserHasBar(user) ? 'pull_bar' : 'pull_row';
     return SESSION_ORDER.map(key => {
-      const posKey  = key === 'push' ? 'pushup_position'  : key + '_position';
-      const tgtKey  = key === 'push' ? 'pushup_target'    : key + '_target';
-      const trnKey  = key === 'push' ? 'pushup_transition': key + '_transition';
-      const tier       = user[posKey]  || 0;
-      const target     = user[tgtKey]  || 3;
-      const transition = user[trnKey]  || 0;
-
       let ladderKey;
       if (key === 'pull') ladderKey = pullLadder;
       else if (key === 'push') ladderKey = 'pushup';
@@ -1284,17 +1319,31 @@ function buildSessionExercises(user) {
       const ladder = TIER_NAMES[ladderKey];
       if (!ladder) { console.error('No ladder for key:', key, ladderKey); return null; }
 
-      const primaryName = ladder[Math.min(tier, ladder.length - 1)];
+      const movementKey = getMovementKey(key);
+      const tier = getUserPosition(user, movementKey);
+      const target = getUserTarget(user, movementKey, ladderKey, tier);
+      const transition = getUserTransition(user, movementKey);
+      const primaryTier = transition > 0 ? Math.min(tier + 1, ladder.length - 1) : Math.min(tier, ladder.length - 1);
+      const primaryName = ladder[primaryTier];
       const isTimeBased = TIME_BASED_EXERCISES.includes(primaryName);
       const primarySets = transition >= 2 ? 3 : 2;
       let finisherName = null;
       let finisherReps = 0;
-      if (transition > 0 && tier > 0) {
-        finisherName = ladder[Math.max(0, tier - 1)];
+      if (transition > 0 && primaryTier > tier) {
+        finisherName = ladder[Math.min(tier, ladder.length - 1)];
         finisherReps = Math.max(3, Math.floor(target * 0.6));
       }
-      return { key, label: CATEGORY_LABELS[key], primaryName, primarySets, targetReps: target, isTimeBased, finisherName, finisherReps, tier, transition, currentAdjustedTarget: target };
+      return { key, label: CATEGORY_LABELS[key], primaryName, primarySets, targetReps: target, isTimeBased, finisherName, finisherReps, tier, primaryTier, transition, currentAdjustedTarget: target };
     }).filter(Boolean);
+  }
+
+  function getRestSeconds(ex, betweenExercises=false) {
+    if (betweenExercises) return 45;
+    if (ex.isTimeBased) return 75;
+    if (ex.key === 'pull' && ex.primaryTier >= 2) return 90;
+    if (ex.primaryTier >= 4) return 90;
+    if (ex.primaryTier >= 2) return 75;
+    return 60;
   }
 
   function startSession() {
@@ -1363,7 +1412,7 @@ function buildSessionExercises(user) {
       document.getElementById('rep-input-area').style.display = 'block';
       document.getElementById('timer-input-area').style.display = 'none';
       document.getElementById('target-display').textContent = adjustedTarget;
-      document.getElementById('actual-display').textContent = '0';
+      setSessionNumber(document.getElementById('actual-display'), 0);
     }
     goTo('screen-session-exercise');
     startSessionTimer();
@@ -1383,12 +1432,56 @@ function buildSessionExercises(user) {
 
   function adjustActual(delta) {
     const el = document.getElementById('actual-display');
-    el.textContent = Math.max(0, (parseInt(el.textContent)||0) + delta);
+    setSessionNumber(el, getSessionNumber(el) + delta);
   }
 
   function adjustFinisher(delta) {
     const el = document.getElementById('finisher-actual');
-    el.textContent = Math.max(0, (parseInt(el.textContent)||0) + delta);
+    setSessionNumber(el, getSessionNumber(el) + delta);
+  }
+
+  function getSessionNumber(el) {
+    return parseInt(el.value !== undefined ? el.value : el.textContent) || 0;
+  }
+
+  function setSessionNumber(el, value) {
+    const next = Math.max(0, parseInt(value) || 0);
+    if (el.value !== undefined) el.value = next;
+    else el.textContent = next;
+  }
+
+  function makeSessionNumberEditable(displayId) {
+    const display = document.getElementById(displayId);
+    if (!display || display.tagName === 'INPUT') return;
+    const current = getSessionNumber(display);
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.className = 'number-input-direct';
+    input.id = displayId;
+    input.value = current;
+    input.min = 0;
+    input.max = 999;
+    input.style.fontSize = '52px';
+    input.style.fontWeight = '700';
+    input.style.textAlign = 'center';
+    input.style.flex = '1';
+    display.replaceWith(input);
+    input.focus();
+    input.select();
+    input.addEventListener('blur', () => {
+      const div = document.createElement('div');
+      div.id = displayId;
+      div.textContent = getSessionNumber(input);
+      div.onclick = () => makeSessionNumberEditable(displayId);
+      div.style.fontSize = '52px';
+      div.style.fontWeight = '700';
+      div.style.color = '#fff';
+      div.style.textAlign = 'center';
+      div.style.flex = '1';
+      div.style.cursor = 'pointer';
+      if (displayId === 'actual-display') div.style.letterSpacing = '-2px';
+      input.replaceWith(div);
+    });
   }
 
   function startHoldTimer() {
@@ -1429,12 +1522,12 @@ function buildSessionExercises(user) {
       actual = sessionState.holdSeconds;
       if (sessionState.holdRunning) stopHoldTimer();
     } else {
-      actual = parseInt(document.getElementById('actual-display').textContent) || 0;
+      actual = getSessionNumber(document.getElementById('actual-display'));
     }
     sessionState.setResults[exIndex].push({ target, actual });
     const nextSet = sessionState.currentSet + 1;
     if (nextSet < ex.primarySets) {
-      showRestTimer(REST_SECONDS[ex.key]||90, `Next: Set ${nextSet+1} of ${ex.primarySets}`, () => showExercise(exIndex, nextSet));
+      showRestTimer(getRestSeconds(ex), `Next: Set ${nextSet+1} of ${ex.primarySets}`, () => showExercise(exIndex, nextSet));
     } else if (ex.finisherName) {
       showFinisher(ex);
     } else {
@@ -1466,12 +1559,12 @@ function buildSessionExercises(user) {
     document.getElementById('finisher-name').textContent = ex.finisherName;
     document.getElementById('finisher-instruction').textContent = EXERCISE_INSTRUCTIONS[ex.finisherName] || '';
     document.getElementById('finisher-target').textContent = ex.finisherReps;
-    document.getElementById('finisher-actual').textContent = '0';
+    setSessionNumber(document.getElementById('finisher-actual'), 0);
     goTo('screen-finisher');
   }
 
   function doneFinisher() {
-    const actual = parseInt(document.getElementById('finisher-actual').textContent) || 0;
+    const actual = getSessionNumber(document.getElementById('finisher-actual'));
     const ex = sessionState.exercises[sessionState.currentExIndex];
     sessionState.finisherResults.push({ exKey:ex.key, finisherName:ex.finisherName, target:ex.finisherReps, actual });
     moveToNextExercise(sessionState.currentExIndex);
@@ -1480,7 +1573,7 @@ function buildSessionExercises(user) {
   function moveToNextExercise(currentIndex) {
     const nextIndex = currentIndex + 1;
     if (nextIndex < sessionState.exercises.length) {
-      showRestTimer(60, `Next: ${sessionState.exercises[nextIndex].primaryName}`, () => showExercise(nextIndex, 0));
+      showRestTimer(getRestSeconds(sessionState.exercises[nextIndex], true), `Next: ${sessionState.exercises[nextIndex].primaryName}`, () => showExercise(nextIndex, 0));
     } else {
       completeSession();
     }
@@ -1651,6 +1744,21 @@ function buildSessionExercises(user) {
     else{if(r<=2)return 0;if(r<=5)return 1;return 2;}
   }
 
+  function getInitialTransition(exercise, reps, hasBar) {
+    if (exercise === 'pushup' && reps >= 3 && reps <= 8) return 1;
+    if (exercise === 'pull' && hasBar && reps >= 1 && reps <= 2) return 1;
+    return 0;
+  }
+
+  function getFirstSessionTarget(ladderKey, tier) {
+    const ladder = TIER_NAMES[ladderKey];
+    const exerciseName = ladder[Math.min(tier, ladder.length - 1)];
+    const starting = STARTING_VOLUME[ladderKey][tier] || STARTING_VOLUME[ladderKey][0] || 3;
+    const calculated = Math.floor(starting * 0.7);
+    const floor = FIRST_TARGET_FLOORS[exerciseName] || 2;
+    return Math.max(floor, calculated);
+  }
+
   // ── BUILD PLAN ─────────────────────────────────────────────
   async function buildPlan() {
     const a = userData.assessments;
@@ -1662,29 +1770,37 @@ function buildSessionExercises(user) {
       pull:   getPullTier(a.pull, userData.hasBar)
     };
 
-    // First session targets at 70% of starting volume
-    const firstTargets = {
-      pushup: Math.max(2, Math.floor(([8,6,6,6,15,5,4][tiers.pushup]||6) * 0.7)),
-      squat:  Math.max(2, Math.floor(([8,10,8,8,8,6,4,3][tiers.squat]||8) * 0.7)),
-      glute:  Math.max(2, Math.floor(([10,10,8,6,5][tiers.glute]||8) * 0.7)),
-      plank:  Math.max(10, Math.floor(([15,20,20,15,20][tiers.plank]||20) * 0.7)),
-      pull:   Math.max(2, Math.floor(([10,20,3,2,2,3][tiers.pull]||8) * 0.7))
+    const pullPath = userData.hasBar ? 'pull_bar' : 'pull_row';
+    const transitions = {
+      pushup: getInitialTransition('pushup', a.pushup, userData.hasBar),
+      squat:  getInitialTransition('squat', a.squat, userData.hasBar),
+      glute:  getInitialTransition('glute', a.glute, userData.hasBar),
+      plank:  getInitialTransition('plank', a.plank, userData.hasBar),
+      pull:   getInitialTransition('pull', a.pull, userData.hasBar)
     };
 
-    const pullPath = userData.hasBar ? 'pull_bar' : 'pull_row';
+    // First session targets are 70% of starting volume, then protected by floor minimums.
+    const firstTargets = {
+      pushup: getFirstSessionTarget('pushup', tiers.pushup),
+      squat:  getFirstSessionTarget('squat', tiers.squat),
+      glute:  getFirstSessionTarget('glute', tiers.glute),
+      plank:  getFirstSessionTarget('plank', tiers.plank),
+      pull:   getFirstSessionTarget(pullPath, tiers.pull)
+    };
+
     const exercises = [
-      { label:'Push',  tier:tiers.pushup, names:TIER_NAMES.pushup },
-      { label:'Pull',  tier:tiers.pull,   names:TIER_NAMES[pullPath] },
-      { label:'Squat', tier:tiers.squat,  names:TIER_NAMES.squat },
-      { label:'Hinge', tier:tiers.glute,  names:TIER_NAMES.glute },
-      { label:'Core',  tier:tiers.plank,  names:TIER_NAMES.plank }
+      { label:'Push',  tier:tiers.pushup, transition:transitions.pushup, names:TIER_NAMES.pushup },
+      { label:'Pull',  tier:tiers.pull,   transition:transitions.pull, names:TIER_NAMES[pullPath] },
+      { label:'Squat', tier:tiers.squat,  transition:transitions.squat, names:TIER_NAMES.squat },
+      { label:'Hinge', tier:tiers.glute,  transition:transitions.glute, names:TIER_NAMES.glute },
+      { label:'Core',  tier:tiers.plank,  transition:transitions.plank, names:TIER_NAMES.plank }
     ];
 
     document.getElementById('complete-headline').innerHTML = `Your plan is ready,<br><span style="color:#c8f135">${userData.name}</span>`;
     document.getElementById('tier-summary').innerHTML = exercises.map(e => `
       <div class="tier-row">
         <span class="tier-exercise">${e.label}</span>
-        <span class="tier-level">${e.names[Math.min(e.tier, e.names.length-1)]}</span>
+        <span class="tier-level">${getPlanSummaryName(e)}</span>
       </div>`).join('');
 
     goTo('screen-complete');
@@ -1705,7 +1821,12 @@ function buildSessionExercises(user) {
         squat_target:    firstTargets.squat,
         glute_target:    firstTargets.glute,
         plank_target:    firstTargets.plank,
-        pull_target:     firstTargets.pull
+        pull_target:     firstTargets.pull,
+        pushup_transition: transitions.pushup,
+        squat_transition:  transitions.squat,
+        glute_transition:  transitions.glute,
+        plank_transition:  transitions.plank,
+        pull_transition:   transitions.pull
       };
       const saved = await supabaseQuery('POST','users',payload);
       currentUser = saved[0];
@@ -1714,10 +1835,20 @@ function buildSessionExercises(user) {
       indicator.className = 'saving-indicator success';
     } catch(err) {
       console.error('Save failed:', err);
-      localStorage.setItem('calitrack_user', JSON.stringify({...userData, ...tiers}));
+      currentUser = payload;
+      localStorage.setItem('calitrack_user', JSON.stringify(payload));
       indicator.textContent = 'Saved locally';
       indicator.className = 'saving-indicator error';
     }
+  }
+
+  function getPlanSummaryName(exercise) {
+    const primaryTier = exercise.transition > 0 ? Math.min(exercise.tier + 1, exercise.names.length - 1) : Math.min(exercise.tier, exercise.names.length - 1);
+    const primary = exercise.names[primaryTier];
+    if (exercise.transition > 0 && primaryTier > exercise.tier) {
+      return `${primary} + ${exercise.names[exercise.tier]} finisher`;
+    }
+    return primary;
   }
 
   function goToHome() {
